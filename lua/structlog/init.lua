@@ -1,7 +1,7 @@
 local M = {
-  level = require "log.level",
-  Logger = require "log.logger",
-  Sinks = require "log.sinks",
+	level = require("structlog.level"),
+	Logger = require("structlog.logger"),
+	Sinks = require("structlog.sinks"),
 }
 
 return M

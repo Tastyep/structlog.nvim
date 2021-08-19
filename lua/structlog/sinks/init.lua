@@ -1,5 +1,5 @@
 local M = {
-  Console = require "log.sinks.console",
+	Console = require("structlog.sinks.console"),
 }
 
 return M
