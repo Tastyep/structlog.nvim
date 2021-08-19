@@ -18,7 +18,7 @@ function M.Formatter(format, keys)
 
     local output = string.format(format, unpack(format_args))
     if not vim.tbl_isempty(kwargs.events) then
-      output = output .. vim.inspect(kwargs.events, { newline = "" }):sub(2, -2)
+      output = output .. vim.inspect(kwargs.events, { newline = "", indent = " " }):sub(2, -2)
     end
 
     return output
