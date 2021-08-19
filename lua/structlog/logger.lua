@@ -23,7 +23,8 @@ function Logger:log(level, msg, kwargs)
     return
   end
 
-  kwargs.level = level
+  local Level = require("structlog.level")
+  kwargs.level = Level.name(level)
   kwargs.msg = msg
   for _, sink in ipairs(self.sinks) do
     sink:write(kwargs)
