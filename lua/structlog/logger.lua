@@ -18,37 +18,40 @@ function Logger:new(level, sinks)
   return logger
 end
 
-function Logger:log(level, msg, kwargs)
+function Logger:log(level, msg, events)
   if level < self.level then
     return
   end
 
   local Level = require("structlog.level")
-  kwargs.level = Level.name(level)
-  kwargs.msg = msg
+  local kwargs = {
+    level = Level.name(level),
+    msg = msg,
+    events = events,
+  }
   for _, sink in ipairs(self.sinks) do
     sink:write(kwargs)
   end
 end
 
-function Logger:trace(msg, kwargs)
-  self:log(self.level, msg, kwargs)
+function Logger:trace(msg, events)
+  self:log(self.level, msg, events)
 end
 
-function Logger:debug(msg, kwargs)
-  self:log(self.level, msg, kwargs)
+function Logger:debug(msg, events)
+  self:log(self.level, msg, events)
 end
 
-function Logger:info(msg, kwargs)
-  self:log(self.level, msg, kwargs)
+function Logger:info(msg, events)
+  self:log(self.level, msg, events)
 end
 
-function Logger:warn(msg, kwargs)
-  self:log(self.level, msg, kwargs)
+function Logger:warn(msg, events)
+  self:log(self.level, msg, events)
 end
 
-function Logger:error(msg, kwargs)
-  self:log(self.level, msg, kwargs)
+function Logger:error(msg, events)
+  self:log(self.level, msg, events)
 end
 
 return Logger

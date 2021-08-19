@@ -16,7 +16,12 @@ function M.Formatter(format, keys)
       kwargs[key] = nil
     end
 
-    return string.format(format, unpack(format_args)) .. vim.inspect(kwargs)
+    local output = string.format(format, unpack(format_args))
+    if not vim.tbl_isempty(kwargs.events) then
+      output = output .. vim.inspect(kwargs.events, { newline = "" }):sub(2, -2)
+    end
+
+    return output
   end
 end
 
