@@ -15,6 +15,7 @@ function Console:new(opts)
   console.format = opts.format or function(...)
     return string.format("%-6s [%s] %s %s", ...)
   end
+  console.processors = opts.processors or {}
 
   Console.__index = Console
   setmetatable(console, self)
@@ -24,6 +25,10 @@ end
 
 function Console:write(kwargs)
   local function impl()
+    for _, processor in ipairs(self.processors) do
+      processor(kwargs)
+    end
+
     local formatted_msg = vim.inspect(kwargs, { newline = "" })
     local ok = pcall(vim.cmd, string.format([[echom "%s"]], formatted_msg))
     if not ok then
