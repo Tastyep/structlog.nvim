@@ -12,9 +12,6 @@ function Console:new(opts)
   local console = {}
 
   console.async = opts.async or true
-  console.format = opts.format or function(...)
-    return string.format("%-6s [%s] %s %s", ...)
-  end
   console.processors = opts.processors or {}
 
   Console.__index = Console
@@ -26,13 +23,16 @@ end
 function Console:write(kwargs)
   local function impl()
     for _, processor in ipairs(self.processors) do
-      processor(kwargs)
+      kwargs = processor(kwargs)
     end
 
-    local formatted_msg = vim.inspect(kwargs, { newline = "" })
-    local ok = pcall(vim.cmd, string.format([[echom "%s"]], formatted_msg))
+    if type(kwargs) == "table" then
+      kwargs = vim.inspect(kwargs, { newline = "" })
+    end
+
+    local ok = pcall(vim.cmd, string.format([[echom "%s"]], kwargs))
     if not ok then
-      vim.api.nvim_out_write(formatted_msg .. "\n")
+      vim.api.nvim_out_write(kwargs .. "\n")
     end
   end
 
