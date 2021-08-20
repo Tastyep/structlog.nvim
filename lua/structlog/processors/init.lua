@@ -7,6 +7,18 @@ function M.Timestamper(format)
   end
 end
 
+function M.LineMarker()
+  return function(kwargs)
+    local info = debug.getinfo(3, "Sl")
+    if info then
+      kwargs["line"] = info.short_src .. ":" .. info.currentline
+    else
+      kwargs["line"] = "nil"
+    end
+    return kwargs
+  end
+end
+
 function M.Formatter(format, keys)
   return function(kwargs)
     local format_args = {}
