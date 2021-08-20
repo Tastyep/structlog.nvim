@@ -6,6 +6,8 @@ setmetatable(Logger, {
   end,
 })
 
+local Level = require("structlog.level")
+
 function Logger:new(level, sinks)
   local logger = {}
 
@@ -23,7 +25,6 @@ function Logger:log(level, msg, events)
     return
   end
 
-  local Level = require("structlog.level")
   local kwargs = {
     level = Level.name(level),
     msg = msg,
@@ -35,23 +36,23 @@ function Logger:log(level, msg, events)
 end
 
 function Logger:trace(msg, events)
-  self:log(self.level, msg, events)
+  self:log(Level.TRACE, msg, events)
 end
 
 function Logger:debug(msg, events)
-  self:log(self.level, msg, events)
+  self:log(Level.DEBUG, msg, events)
 end
 
 function Logger:info(msg, events)
-  self:log(self.level, msg, events)
+  self:log(Level.INFO, msg, events)
 end
 
 function Logger:warn(msg, events)
-  self:log(self.level, msg, events)
+  self:log(Level.WARN, msg, events)
 end
 
 function Logger:error(msg, events)
-  self:log(self.level, msg, events)
+  self:log(Level.ERROR, msg, events)
 end
 
 return Logger

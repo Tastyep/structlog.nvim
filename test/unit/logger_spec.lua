@@ -1,24 +1,46 @@
 local log = require("structlog")
+
 local stub = require("luassert.stub")
+local match = require("luassert.match")
 
 describe("logger", function()
+  local sink = {}
+  stub(sink, "write")
+
+  local logger = log.Logger(log.level.TRACE, { sink })
+
+  before_each(function()
+    sink.write:clear()
+  end)
+
   describe("log method", function()
-    local sink_stub = {}
-    stub(sink_stub, "write")
-
-    local logger = log.Logger(log.level.INFO, { sink_stub })
-
-    before_each(function()
-      sink_stub.write:clear()
-    end)
-
     it("should log if log level is more critical than its own level", function()
       logger:log(log.level.INFO, "test")
-      assert.True(sink_stub.write:called())
+      assert.True(sink.write:called())
     end)
     it("should not log if log level is less critical than its own level", function()
-      logger:log(log.level.DEBUG, "test")
-      assert.False(sink_stub.write:called())
+      local info_logger = log.Logger(log.level.INFO, { sink })
+      info_logger:log(log.level.DEBUG, "test")
+      assert.False(sink.write:called())
     end)
   end)
+
+  for level, method in ipairs({
+    "trace",
+    "debug",
+    "info",
+    "warn",
+    "error",
+  }) do
+    describe(string.format("%s method", method), function()
+      it(string.format("should log with %s level", method), function()
+        local msg = "test"
+        local events = { args = "test" }
+        local level_name = log.level.name(level)
+
+        logger[method](logger, msg, events)
+        assert.stub(sink.write).was_called_with(match.is_ref(sink), { msg = msg, level = level_name, events = events })
+      end)
+    end)
+  end
 end)
