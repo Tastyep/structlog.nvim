@@ -20,15 +20,11 @@ function Console:new(opts)
   return console
 end
 
-function Console:write(kwargs)
+function Console:write(message)
   local function impl()
-    if type(kwargs) == "table" then
-      kwargs = vim.inspect(kwargs, { newline = "" })
-    end
-
-    local ok = pcall(vim.cmd, string.format([[echom "%s"]], kwargs))
+    local ok = pcall(vim.cmd, string.format([[echom "%s"]], message))
     if not ok then
-      vim.api.nvim_out_write(kwargs .. "\n")
+      vim.api.nvim_out_write(message .. "\n")
     end
   end
 
