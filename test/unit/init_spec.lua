@@ -18,6 +18,9 @@ describe("get_logger", function()
     local config = {
       test = {
         level = log.level.INFO,
+        sinks = {
+          log.sinks.Console(),
+        },
       },
     }
     log.configure(config)
@@ -25,5 +28,6 @@ describe("get_logger", function()
     local logger = log.get_logger("test")
     assert.is_not.Nil(logger)
     assert.equals(config.test.level, logger.level)
+    assert.are.same(config.test.sinks, logger.sinks)
   end)
 end)

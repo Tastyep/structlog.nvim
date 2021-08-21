@@ -10,7 +10,7 @@ local loggers = {}
 
 function M.configure(logger_configs)
   for name, config in pairs(logger_configs) do
-    loggers[name] = M.Logger(name, config.level, config.processors)
+    loggers[name] = M.Logger(name, config.level, config.sinks)
   end
 end
 
