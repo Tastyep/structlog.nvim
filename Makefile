@@ -4,4 +4,8 @@ test:
 
 .PHONY: lint
 lint:
-	luacheck lua/
+	luacheck .
+
+.PHONY: format
+format:
+	stylua . $(args)
