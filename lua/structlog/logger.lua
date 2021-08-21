@@ -25,8 +25,8 @@ function Logger:clone()
   return self:new(self.name, self.level, self.sinks)
 end
 
-function Logger:log(level, msg, events)
-  if level < self.level then
+local function log(logger, level, msg, events)
+  if level < logger.level then
     return
   end
 
@@ -35,39 +35,42 @@ function Logger:log(level, msg, events)
     msg = msg,
     events = events or {},
   }
-  for _, sink in ipairs(self.sinks) do
+  for _, sink in ipairs(logger.sinks) do
     local sink_kwargs = vim.deepcopy(kwargs)
 
     for _, processor in ipairs(sink.processors) do
-      sink_kwargs = processor(self, sink_kwargs)
+      sink_kwargs = processor(logger, sink_kwargs)
     end
     if type(sink_kwargs) == "table" then
       sink_kwargs = vim.inspect(sink_kwargs, { newline = "", indent = " " })
     end
 
-    print(sink_kwargs)
     sink:write(sink_kwargs)
   end
 end
 
+function Logger:log(level, msg, events)
+  log(self, level, msg, events)
+end
+
 function Logger:trace(msg, events)
-  self:log(Level.TRACE, msg, events)
+  log(self, Level.TRACE, msg, events)
 end
 
 function Logger:debug(msg, events)
-  self:log(Level.DEBUG, msg, events)
+  log(self, Level.DEBUG, msg, events)
 end
 
 function Logger:info(msg, events)
-  self:log(Level.INFO, msg, events)
+  log(self, Level.INFO, msg, events)
 end
 
 function Logger:warn(msg, events)
-  self:log(Level.WARN, msg, events)
+  log(self, Level.WARN, msg, events)
 end
 
 function Logger:error(msg, events)
-  self:log(Level.ERROR, msg, events)
+  log(self, Level.ERROR, msg, events)
 end
 
 return Logger
