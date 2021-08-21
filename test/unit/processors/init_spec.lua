@@ -13,12 +13,82 @@ describe("Timestamper", function()
   end)
 end)
 
+describe("StackWriter", function()
+  describe("line option", function()
+    it("should add an emtpy value if not present", function()
+      local info = {}
+      local debugger = function()
+        return info
+      end
+      local writer = processors.StackWriter("%s", { "line" }, { debugger = debugger })
+
+      local expected = ""
+      local kwargs = writer(logger, {})
+      assert.equals(expected, kwargs.stack)
+    end)
+    it("should add the current line", function()
+      local info = {
+        currentline = 1,
+      }
+      local debugger = function()
+        return info
+      end
+      local writer = processors.StackWriter("%s", { "line" }, { debugger = debugger })
+
+      local expected = string.format("%d", info.currentline)
+      local kwargs = writer(logger, {})
+      assert.equals(expected, kwargs.stack)
+    end)
+    it("should add the line range if currentline is not available", function()
+      local info = {
+        linedefined = 1,
+        lastlinedefined = 5,
+      }
+      local debugger = function()
+        return info
+      end
+      local writer = processors.StackWriter("%s", { "line" }, { debugger = debugger })
+
+      local expected = string.format("[%d-%d]", info.linedefined, info.lastlinedefined)
+      local kwargs = writer(logger, {})
+      assert.equals(expected, kwargs.stack)
+    end)
+  end)
+
+  describe("file option", function()
+    it("should add an empty value if not present", function()
+      local info = {}
+
+      local debugger = function()
+        return info
+      end
+      local writer = processors.StackWriter("%s", { "file" }, { debugger = debugger })
+
+      local expected = ""
+      local kwargs = writer(logger, {})
+      assert.equals(expected, kwargs.stack)
+    end)
+    it("should add the file", function()
+      local info = {
+        source = "@path/to/lua/file.lua",
+      }
+
+      local debugger = function()
+        return info
+      end
+      local writer = processors.StackWriter("%s", { "file" }, { debugger = debugger })
+
+      local expected = string.format("%s", info.source:sub(2))
+      local kwargs = writer(logger, {})
+      assert.equals(expected, kwargs.stack)
+    end)
+  end)
+end)
+
 describe("Namer", function()
   it("should add a logger_name entry", function()
-    local kwargs = {}
     local namer = processors.Namer()
-
-    kwargs = namer(logger, kwargs)
+    local kwargs = namer(logger, {})
     assert.equals(logger.name, kwargs.logger_name)
   end)
 end)
