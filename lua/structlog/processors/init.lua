@@ -1,14 +1,14 @@
 local M = {}
 
 function M.Timestamper(format)
-  return function(kwargs)
+  return function(_, kwargs)
     kwargs["timestamp"] = os.date(format)
     return kwargs
   end
 end
 
 function M.LineMarker()
-  return function(kwargs)
+  return function(_, kwargs)
     local info = debug.getinfo(3, "Sl")
     if info then
       kwargs["line"] = info.short_src .. ":" .. info.currentline
@@ -20,7 +20,7 @@ function M.LineMarker()
 end
 
 function M.Formatter(format, keys)
-  return function(kwargs)
+  return function(_, kwargs)
     local format_args = {}
 
     for _, key in ipairs(keys) do

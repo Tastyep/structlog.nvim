@@ -1,12 +1,14 @@
 local log = require("structlog")
 local processors = log.processors
 
+local logger = log.Logger("test", log.level.INFO, {})
+
 describe("Timestamper", function()
   it("should add a timestamp field", function()
     local kwargs = {}
     local timestamper = processors.Timestamper("%H:%M:%S")
 
-    kwargs = timestamper(kwargs)
+    kwargs = timestamper(logger, kwargs)
     assert.equals(type(kwargs.timestamp), "string")
   end)
 end)
@@ -16,7 +18,7 @@ describe("Formatter", function()
     local kwargs = { level = log.level.INFO, msg = "test", events = {} }
     local formatter = processors.Formatter("[%s] %s", { "level", "msg" })
 
-    local message = formatter(vim.deepcopy(kwargs))
+    local message = formatter(logger, vim.deepcopy(kwargs))
     assert.equals(string.format("[%s] %s", kwargs.level, kwargs.msg), message)
   end)
 
@@ -24,7 +26,7 @@ describe("Formatter", function()
     local kwargs = { level = log.level.INFO, msg = "test", events = { test = "test" } }
     local formatter = processors.Formatter("[%s] %s", { "level", "msg" })
 
-    local message = formatter(vim.deepcopy(kwargs))
+    local message = formatter(logger, vim.deepcopy(kwargs))
     local expected = string.format('[%s] %s test = "%s"', kwargs.level, kwargs.msg, kwargs.events.test)
     assert.equals(expected, message)
   end)
