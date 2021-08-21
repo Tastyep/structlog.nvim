@@ -1,11 +1,14 @@
-.PHONY: test
 test:
-	nvim --headless --noplugin -u test/minimal-init.lua -c "PlenaryBustedDirectory test/unit { minimal_init = 'test/minimal-init.lua' }"
+	@if [ "$(FILE)" == "" ]; then \
+		nvim --headless --noplugin -u test/minimal-init.lua -c "PlenaryBustedDirectory test/unit { minimal_init = 'test/minimal-init.lua' }"; \
+	else \
+		nvim --headless --noplugin -u test/minimal-init.lua -c "lua require('plenary.busted').run('$(FILE)')"; \
+	fi
 
-.PHONY: lint
 lint:
 	luacheck .
 
-.PHONY: format
 format:
 	stylua . $(args)
+
+.PHONY: test lint format
