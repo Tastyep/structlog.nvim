@@ -19,6 +19,13 @@ function M.LineMarker()
   end
 end
 
+function M.Namer()
+  return function(logger, kwargs)
+    kwargs["logger_name"] = logger.name
+    return kwargs
+  end
+end
+
 function M.Formatter(format, keys)
   return function(_, kwargs)
     local format_args = {}

@@ -4,12 +4,22 @@ local processors = log.processors
 local logger = log.Logger("test", log.level.INFO, {})
 
 describe("Timestamper", function()
-  it("should add a timestamp field", function()
+  it("should add a timestamp entry", function()
     local kwargs = {}
     local timestamper = processors.Timestamper("%H:%M:%S")
 
     kwargs = timestamper(logger, kwargs)
     assert.equals(type(kwargs.timestamp), "string")
+  end)
+end)
+
+describe("Namer", function()
+  it("should add a logger_name entry", function()
+    local kwargs = {}
+    local namer = processors.Namer()
+
+    kwargs = namer(logger, kwargs)
+    assert.equals(logger.name, kwargs.logger_name)
   end)
 end)
 
