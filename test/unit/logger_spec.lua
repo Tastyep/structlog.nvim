@@ -7,7 +7,7 @@ describe("logger", function()
   local sink = { processors = {} }
   stub(sink, "write")
 
-  local logger = log.Logger(log.level.TRACE, { sink })
+  local logger = log.Logger("test", log.level.TRACE, { sink })
 
   before_each(function()
     sink.write:clear()
@@ -19,7 +19,7 @@ describe("logger", function()
       assert.True(sink.write:called())
     end)
     it("should not log if log level is less critical than its own level", function()
-      local info_logger = log.Logger(log.level.INFO, { sink })
+      local info_logger = log.Logger("test", log.level.INFO, { sink })
       info_logger:log(log.level.DEBUG, "test")
       assert.False(sink.write:called())
     end)

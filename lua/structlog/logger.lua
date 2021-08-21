@@ -8,9 +8,10 @@ setmetatable(Logger, {
 
 local Level = require("structlog.level")
 
-function Logger:new(level, sinks)
+function Logger:new(name, level, sinks)
   local logger = {}
 
+  logger.name = name
   logger.level = level
   logger.sinks = sinks
 
