@@ -7,6 +7,49 @@ function M.Timestamper(format)
   end
 end
 
+function M.StackWriter(format, keys, opts)
+  opts = opts or {}
+
+  local debugger = opts.debugger or function()
+    return debug.getinfo(4, "Sl")
+  end
+
+  local handlers = {
+    line = function(info)
+      if info.currentline then
+        return info.currentline
+      end
+      if info.linedefined and info.lastlinedefined then
+        return string.format("[%d-%d]", info.linedefined, info.lastlinedefined)
+      end
+      return ""
+    end,
+    -- source=@test/unit/processors/init_spec.lua
+    file = function(info)
+      if not info.source then
+        return ""
+      end
+      return info.source:sub(2)
+    end,
+  }
+
+  return function(_, kwargs)
+    local info = debugger()
+    if not info then
+      kwargs["stack"] = ""
+      return kwargs
+    end
+
+    local format_args = {}
+    for _, key in ipairs(keys) do
+      table.insert(format_args, handlers[key](info))
+    end
+    kwargs["stack"] = string.format(format, unpack(format_args))
+
+    return kwargs
+  end
+end
+
 function M.Namer()
   return function(logger, kwargs)
     kwargs["logger_name"] = logger.name
