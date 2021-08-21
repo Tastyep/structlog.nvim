@@ -1,4 +1,4 @@
-name: test
+name: sanitize
 on:
   push:
     branches: '**'
