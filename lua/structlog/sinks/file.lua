@@ -13,6 +13,7 @@ function File:new(path, opts)
 
   file.path = path
   file.processors = opts.processors or {}
+  file.iolib = opts.iolib or io
 
   File.__index = File
   setmetatable(file, self)
@@ -20,10 +21,10 @@ function File:new(path, opts)
   return file
 end
 
-function File:write(kwargs)
-  local fp = assert(io.open(self.path, "a"))
-  fp:write(kwargs)
-  fp.write("\n")
+function File:write(message)
+  local fp = assert(self.iolib.open(self.path, "a"))
+  fp:write(message)
+  fp:write("\n")
   fp:close()
 end
 
