@@ -31,7 +31,16 @@ function Logger:log(level, msg, events)
     events = events,
   }
   for _, sink in ipairs(self.sinks) do
-    sink:write(kwargs)
+    local sink_kwargs = vim.deepcopy(kwargs)
+
+    for _, processor in ipairs(sink.processors) do
+      sink_kwargs = processor(sink_kwargs)
+    end
+    if type(sink_kwargs) == "table" then
+      sink_kwargs = vim.inspect(sink_kwargs, { newline = "", indent = " " })
+    end
+
+    sink:write(sink_kwargs)
   end
 end
 

@@ -21,14 +21,6 @@ function File:new(path, opts)
 end
 
 function File:write(kwargs)
-  for _, processor in ipairs(self.processors) do
-    kwargs = processor(kwargs)
-  end
-
-  if type(kwargs) == "table" then
-    kwargs = vim.inspect(kwargs, { newline = "" })
-  end
-
   local fp = assert(io.open(self.path, "a"))
   fp:write(kwargs)
   fp.write("\n")

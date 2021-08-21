@@ -4,7 +4,7 @@ local stub = require("luassert.stub")
 local match = require("luassert.match")
 
 describe("logger", function()
-  local sink = {}
+  local sink = { processors = {} }
   stub(sink, "write")
 
   local logger = log.Logger(log.level.TRACE, { sink })
@@ -39,7 +39,10 @@ describe("logger", function()
         local level_name = log.level.name(level)
 
         logger[method](logger, msg, events)
-        assert.stub(sink.write).was_called_with(match.is_ref(sink), { msg = msg, level = level_name, events = events })
+        assert.stub(sink.write).was_called_with(
+          match.is_ref(sink),
+          vim.inspect({ msg = msg, level = level_name, events = events }, { newline = "", indent = " " })
+        )
       end)
     end)
   end

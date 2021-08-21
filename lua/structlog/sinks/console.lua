@@ -22,10 +22,6 @@ end
 
 function Console:write(kwargs)
   local function impl()
-    for _, processor in ipairs(self.processors) do
-      kwargs = processor(kwargs)
-    end
-
     if type(kwargs) == "table" then
       kwargs = vim.inspect(kwargs, { newline = "" })
     end
