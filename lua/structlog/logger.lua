@@ -21,6 +21,10 @@ function Logger:new(name, level, sinks)
   return logger
 end
 
+function Logger:clone()
+  return self:new(self.name, self.level, self.sinks)
+end
+
 function Logger:log(level, msg, events)
   if level < self.level then
     return

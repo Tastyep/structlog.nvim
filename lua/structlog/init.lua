@@ -20,7 +20,7 @@ function M.get_logger(name)
     return nil
   end
 
-  return vim.deepcopy(logger)
+  return logger:clone()
 end
 
 return M
