@@ -33,7 +33,7 @@ function Logger:log(level, msg, events)
   local kwargs = {
     level = Level.name(level),
     msg = msg,
-    events = events,
+    events = events or {},
   }
   for _, sink in ipairs(self.sinks) do
     local sink_kwargs = vim.deepcopy(kwargs)
@@ -45,6 +45,7 @@ function Logger:log(level, msg, events)
       sink_kwargs = vim.inspect(sink_kwargs, { newline = "", indent = " " })
     end
 
+    print(sink_kwargs)
     sink:write(sink_kwargs)
   end
 end
