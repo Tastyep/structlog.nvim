@@ -29,7 +29,15 @@ function M.StackWriter(format, keys, opts)
       if not info.source then
         return ""
       end
-      return info.source:sub(2)
+
+      local source = info.source:sub(2)
+      if opts.max_parents then
+        local parents = vim.split(source, "/")
+
+        source = table.concat(parents, "/", math.max(#parents - opts.max_parents, 1))
+      end
+
+      return source
     end,
   }
 

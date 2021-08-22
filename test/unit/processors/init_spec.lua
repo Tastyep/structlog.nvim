@@ -78,6 +78,32 @@ describe("StackWriter", function()
       local kwargs = writer(logger, {})
       assert.equals(expected, kwargs.stack)
     end)
+    it("should add the file truncated up to max_parents", function()
+      local info = {
+        source = "@path/to/lua/file.lua",
+      }
+      local debugger = function()
+        return info
+      end
+      local writer = processors.StackWriter("%s", { "file" }, { debugger = debugger, max_parents = 0 })
+
+      local expected = "file.lua"
+      local kwargs = writer(logger, {})
+      assert.equals(expected, kwargs.stack)
+    end)
+    it("should add the file's full path if max_parents is too big", function()
+      local info = {
+        source = "@path/to/lua/file.lua",
+      }
+      local debugger = function()
+        return info
+      end
+      local writer = processors.StackWriter("%s", { "file" }, { debugger = debugger, max_parents = 999 })
+
+      local expected = string.format("%s", info.source:sub(2))
+      local kwargs = writer(logger, {})
+      assert.equals(expected, kwargs.stack)
+    end)
   end)
 end)
 
