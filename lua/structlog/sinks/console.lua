@@ -26,15 +26,11 @@ end
 
 function Console:write(message)
   local function impl()
-    local ok = pcall(vim.cmd, string.format([[echom "%s"]], message))
-    if not ok then
-      vim.api.nvim_out_write(message .. "\n")
-    end
+    vim.api.nvim_echo({ { message, nil } }, true, {})
   end
 
   if not self.async and not vim.in_fast_event() then
-    impl()
-    return
+    return impl()
   end
 
   vim.schedule(impl)
