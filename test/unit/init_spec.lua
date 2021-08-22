@@ -6,6 +6,7 @@ describe("Module", function()
     assert.equals("table", type(log.level))
     assert.equals("table", type(log.sinks))
     assert.equals("table", type(log.processors))
+    assert.equals("table", type(log.formatters))
   end)
 end)
 

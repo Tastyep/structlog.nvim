@@ -4,6 +4,7 @@ local M = {
   level = require("structlog.level"),
   sinks = require("structlog.sinks"),
   processors = require("structlog.processors"),
+  formatters = require("structlog.formatters"),
 }
 
 local loggers = {}
