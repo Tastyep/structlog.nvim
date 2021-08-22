@@ -6,6 +6,10 @@ setmetatable(File, {
   end,
 })
 
+--- Create a new file writer
+-- @params path The path to the logging file
+-- @params opts Optional parameters
+-- @params opts.processors The list of processors to chain the log entries in
 function File:new(path, opts)
   opts = opts or {}
 

@@ -1,5 +1,7 @@
 local M = {}
 
+--- Add a timestamp entry
+-- @param format How to format the timestamp
 function M.Timestamper(format)
   return function(_, kwargs)
     kwargs["timestamp"] = os.date(format)
@@ -7,6 +9,10 @@ function M.Timestamper(format)
   end
 end
 
+--- Add entries specified by keys
+-- @param keys The entries to add: ["line", "file"]
+-- @param opts Optional configurations
+-- @param opts.max_parents The maximum number of parent directory thhat file should include
 function M.StackWriter(keys, opts)
   opts = opts or {}
 
@@ -56,6 +62,7 @@ function M.StackWriter(keys, opts)
   end
 end
 
+--- Add the logger name into the 'logger_name' entry
 function M.Namer()
   return function(logger, kwargs)
     kwargs["logger_name"] = logger.name
@@ -63,6 +70,10 @@ function M.Namer()
   end
 end
 
+--- Format entries listed in keys with the given format
+-- Remaining entries will written as key=value
+-- @param format A format to pass to string.format
+-- @param keys The keys to pass as arguments to string.format
 function M.Formatter(format, keys)
   return function(_, kwargs)
     local format_args = {}
