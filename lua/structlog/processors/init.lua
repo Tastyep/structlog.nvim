@@ -7,7 +7,7 @@ function M.Timestamper(format)
   end
 end
 
-function M.StackWriter(format, keys, opts)
+function M.StackWriter(keys, opts)
   opts = opts or {}
 
   local debugger = opts.debugger or function()
@@ -43,16 +43,14 @@ function M.StackWriter(format, keys, opts)
 
   return function(_, kwargs)
     local info = debugger()
-    if not info then
-      kwargs["stack"] = ""
-      return kwargs
-    end
 
-    local format_args = {}
     for _, key in ipairs(keys) do
-      table.insert(format_args, handlers[key](info))
+      if info then
+        kwargs[key] = handlers[key](info)
+      else
+        kwargs[key] = ""
+      end
     end
-    kwargs["stack"] = string.format(format, unpack(format_args))
 
     return kwargs
   end

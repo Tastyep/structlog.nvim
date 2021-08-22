@@ -18,11 +18,11 @@ describe("StackWriter", function()
       local debugger = function()
         return info
       end
-      local writer = processors.StackWriter("%s", { "line" }, { debugger = debugger })
+      local writer = processors.StackWriter({ "line" }, { debugger = debugger })
 
       local expected = ""
       local kwargs = writer(logger, {})
-      assert.equals(expected, kwargs.stack)
+      assert.equals(expected, kwargs.line)
     end)
     it("should add the current line", function()
       local info = {
@@ -31,11 +31,10 @@ describe("StackWriter", function()
       local debugger = function()
         return info
       end
-      local writer = processors.StackWriter("%s", { "line" }, { debugger = debugger })
+      local writer = processors.StackWriter({ "line" }, { debugger = debugger })
 
-      local expected = string.format("%d", info.currentline)
       local kwargs = writer(logger, {})
-      assert.equals(expected, kwargs.stack)
+      assert.equals(info.currentline, kwargs.line)
     end)
     it("should add the line range if currentline is not available", function()
       local info = {
@@ -45,11 +44,11 @@ describe("StackWriter", function()
       local debugger = function()
         return info
       end
-      local writer = processors.StackWriter("%s", { "line" }, { debugger = debugger })
+      local writer = processors.StackWriter({ "line" }, { debugger = debugger })
 
       local expected = string.format("[%d-%d]", info.linedefined, info.lastlinedefined)
       local kwargs = writer(logger, {})
-      assert.equals(expected, kwargs.stack)
+      assert.equals(expected, kwargs.line)
     end)
   end)
 
@@ -59,11 +58,11 @@ describe("StackWriter", function()
       local debugger = function()
         return info
       end
-      local writer = processors.StackWriter("%s", { "file" }, { debugger = debugger })
+      local writer = processors.StackWriter({ "file" }, { debugger = debugger })
 
       local expected = ""
       local kwargs = writer(logger, {})
-      assert.equals(expected, kwargs.stack)
+      assert.equals(expected, kwargs.file)
     end)
     it("should add the file", function()
       local info = {
@@ -72,11 +71,11 @@ describe("StackWriter", function()
       local debugger = function()
         return info
       end
-      local writer = processors.StackWriter("%s", { "file" }, { debugger = debugger })
+      local writer = processors.StackWriter({ "file" }, { debugger = debugger })
 
       local expected = string.format("%s", info.source:sub(2))
       local kwargs = writer(logger, {})
-      assert.equals(expected, kwargs.stack)
+      assert.equals(expected, kwargs.file)
     end)
     it("should add the file truncated up to max_parents", function()
       local info = {
@@ -85,11 +84,11 @@ describe("StackWriter", function()
       local debugger = function()
         return info
       end
-      local writer = processors.StackWriter("%s", { "file" }, { debugger = debugger, max_parents = 0 })
+      local writer = processors.StackWriter({ "file" }, { debugger = debugger, max_parents = 0 })
 
       local expected = "file.lua"
       local kwargs = writer(logger, {})
-      assert.equals(expected, kwargs.stack)
+      assert.equals(expected, kwargs.file)
     end)
     it("should add the file's full path if max_parents is too big", function()
       local info = {
@@ -98,11 +97,11 @@ describe("StackWriter", function()
       local debugger = function()
         return info
       end
-      local writer = processors.StackWriter("%s", { "file" }, { debugger = debugger, max_parents = 999 })
+      local writer = processors.StackWriter({ "file" }, { debugger = debugger, max_parents = 999 })
 
       local expected = string.format("%s", info.source:sub(2))
       local kwargs = writer(logger, {})
-      assert.equals(expected, kwargs.stack)
+      assert.equals(expected, kwargs.file)
     end)
   end)
 end)
