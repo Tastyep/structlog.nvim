@@ -1,4 +1,5 @@
 local File = {}
+local KeyValue = require("structlog.formatters.key_value")
 
 setmetatable(File, {
   __call = function(cls, ...)
@@ -17,6 +18,7 @@ function File:new(path, opts)
 
   file.path = path
   file.processors = opts.processors or {}
+  file.formatter = opts.formatter or KeyValue
   file.iolib = opts.iolib or io
 
   File.__index = File

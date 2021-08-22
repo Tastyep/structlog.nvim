@@ -45,11 +45,9 @@ local function log(logger, level, msg, events)
     for _, processor in ipairs(sink.processors) do
       sink_kwargs = processor(logger, sink_kwargs)
     end
-    if type(sink_kwargs) == "table" then
-      sink_kwargs = vim.inspect(sink_kwargs, { newline = "", indent = " " })
-    end
 
-    sink:write(sink_kwargs)
+    local message = sink.formatter(sink_kwargs)
+    sink:write(message)
   end
 end
 

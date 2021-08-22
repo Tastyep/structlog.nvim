@@ -1,4 +1,5 @@
 local Console = {}
+local KeyValue = require("structlog.formatters.key_value")
 
 setmetatable(Console, {
   __call = function(cls, ...)
@@ -17,6 +18,7 @@ function Console:new(opts)
 
   console.async = opts.async or true
   console.processors = opts.processors or {}
+  console.formatter = opts.formatter or KeyValue
 
   Console.__index = Console
   setmetatable(console, self)
