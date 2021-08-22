@@ -128,8 +128,14 @@ describe("Formatter", function()
   it("should format kwargs into a string and add remaining events if present", function()
     local formatter = processors.Formatter("[%s] %s", { "level", "msg" })
 
-    local kwargs = { level = log.level.INFO, msg = "test", events = { test = "test" } }
-    local expected = string.format('[%s] %s test = "%s"', kwargs.level, kwargs.msg, kwargs.events.test)
+    local kwargs = { level = log.level.INFO, msg = "test", test = 1, events = { nest = { "test" } } }
+    local expected = string.format(
+      "[%s] %s nest=%s, test=%d",
+      kwargs.level,
+      kwargs.msg,
+      vim.inspect(kwargs.events.nest, { newline = "" }),
+      kwargs.test
+    )
     local message = formatter(logger, vim.deepcopy(kwargs))
     assert.equals(expected, message)
   end)

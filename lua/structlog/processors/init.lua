@@ -73,10 +73,19 @@ function M.Formatter(format, keys)
       table.insert(format_args, kwargs[key])
       kwargs[key] = nil
     end
-
     local output = string.format(format, unpack(format_args))
+
+    -- Push remaining entries into events
+    for k, v in pairs(kwargs) do
+      if k ~= "events" then
+        kwargs.events[k] = v
+      end
+    end
+
     if not vim.tbl_isempty(kwargs.events) then
-      output = output .. vim.inspect(kwargs.events, { newline = "", indent = " " }):sub(2, -2)
+      local events = vim.inspect(kwargs.events, { newline = "", indent = " " }):sub(2, -2)
+      -- TODO: Implement our own inspect to avoid modifying user message
+      output = output .. events:gsub(" = ", "=")
     end
 
     return output

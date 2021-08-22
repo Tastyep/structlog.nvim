@@ -1,14 +1,14 @@
 -- vim: ft=lua tw=80
 
 stds.nvim = {
-   globals = {
-      "lvim",
-      vim = { fields = { "g" } },
-      os = { fields = { "capture" } },
-   },
-   read_globals = {
-      "vim",
-   },
+  globals = {
+    "lvim",
+    vim = { fields = { "g" } },
+    os = { fields = { "capture" } },
+  },
+  read_globals = {
+    "vim",
+  },
 }
 std = "lua51+nvim"
 
