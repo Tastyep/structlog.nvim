@@ -1,8 +1,6 @@
-local format_formatters = require("structlog.formatters.format")
-
 local M = {
-  Format = format_formatters.Format,
-  FormatColorizer = format_formatters.FormatColorizer,
+  Format = require("structlog.formatters.format"),
+  FormatColorizer = require("structlog.formatters.format_colorizer"),
 }
 
 return M
