@@ -26,7 +26,11 @@ end
 
 function Console:write(message)
   local function impl()
-    vim.api.nvim_echo({ { message, nil } }, true, {})
+    vim.api.nvim_echo(message, true, {})
+  end
+
+  if type(message) == "string" then
+    message = { { message, nil } }
   end
 
   if not self.async and not vim.in_fast_event() then
