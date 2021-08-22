@@ -9,7 +9,7 @@ describe("Format", function()
 
     local kwargs = { level = log.level.INFO, msg = "test", events = {} }
     local expected = string.format("[%s] %s", kwargs.level, kwargs.msg)
-    local message = formatter(logger, vim.deepcopy(kwargs))
+    local message = formatter(vim.deepcopy(kwargs))
     assert.equals(expected, message)
   end)
 
@@ -24,7 +24,7 @@ describe("Format", function()
       vim.inspect(kwargs.events.nest, { newline = "" }),
       kwargs.test
     )
-    local message = formatter(logger, vim.deepcopy(kwargs))
+    local message = formatter(vim.deepcopy(kwargs))
     assert.equals(expected, message)
   end)
 end)
@@ -40,7 +40,7 @@ describe("FormatColorizer", function()
       { "] " },
       { kwargs.msg .. " " },
     }
-    local message = formatter(logger, vim.deepcopy(kwargs))
+    local message = formatter(vim.deepcopy(kwargs))
     assert.are.same(expected, message)
   end)
 end)

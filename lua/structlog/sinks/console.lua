@@ -18,7 +18,7 @@ function Console:new(opts)
 
   console.async = opts.async or true
   console.processors = opts.processors or {}
-  console.formatter = opts.formatter or KeyValue
+  console.formatter = opts.formatter or KeyValue()
 
   Console.__index = Console
   setmetatable(console, self)

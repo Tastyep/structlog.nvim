@@ -18,7 +18,7 @@ function File:new(path, opts)
 
   file.path = path
   file.processors = opts.processors or {}
-  file.formatter = opts.formatter or KeyValue
+  file.formatter = opts.formatter or KeyValue()
   file.iolib = opts.iolib or io
 
   File.__index = File

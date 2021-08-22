@@ -3,7 +3,7 @@
 -- @param format A format to pass to string.format
 -- @param keys The keys to pass as arguments to string.format
 local function Format(format, keys)
-  return function(_, kwargs)
+  return function(kwargs)
     local format_args = {}
 
     for _, key in ipairs(keys) do
@@ -30,7 +30,7 @@ local function Format(format, keys)
 end
 
 local function FormatColorizer(format, keys, colors)
-  return function(_, kwargs)
+  return function(kwargs)
     local format_cpy = format
 
     local output = {}
