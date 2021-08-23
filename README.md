@@ -8,10 +8,16 @@ Structured Logging for nvim, using Lua
 
 ### Why using it
 
-- Configurable
-- Extendable
-- Easy-to-use
-- Unit-Tested
+`structlog` makes logging in Lua less painful and more powerful by adding structure to your log entries.
+
+Instead of writting complex messages, you can start thinking in terms of an event that happens in the context of key/value pairs. \
+Each log entry is a meaningful dictionary instead of an opaque string!
+
+Thanks to its flexible design, the structure of the final log output is up for you to decide. \
+Each log entry goes through a processor pipeline that is just a chain of functions that receive a dictionary and return a new dictionary that gets fed into the next function. That allows for simple but powerful data manipulation.\
+This dictionary is then formatted and sent out to the sink.
+
+For more details, consider reading the [documentation](https://tastyep.github.io/structlog.nvim/index.html).
 
 ### Usage
 #### Create and Use
