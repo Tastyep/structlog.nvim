@@ -2,6 +2,7 @@
 
 [![test](https://github.com/Tastyep/structlog.nvim/actions/workflows/test.yaml/badge.svg)](https://github.com/Tastyep/structlog.nvim/actions/workflows/test.yaml)
 [![sanitize](https://github.com/Tastyep/structlog.nvim/actions/workflows/sanitize.yaml/badge.svg)](https://github.com/Tastyep/structlog.nvim/actions/workflows/sanitize.yaml)
+[![Documentation](https://github.com/Tastyep/structlog.nvim/actions/workflows/documentation.yaml/badge.svg)](https://tastyep.github.io/structlog.nvim/)
 
 Structured Logging for nvim, using Lua
 
@@ -23,11 +24,11 @@ local logger = log.Logger("name", log.level.INFO, {
     processors = {
       log.processors.Namer(),
       log.processors.Timestamper("%H:%M:%S"),
-      log.processors.Formatter( --
-        "%s [%s] %s: %-40s",
-        { "timestamp", "level", "logger_name", "msg" }
-      ),
     },
+    formatter = log.formatters.Format( --
+      "%s [%s] %s: %-30s",
+      { "timestamp", "level", "logger_name", "msg" }
+    ),
   }),
 })
 
@@ -53,11 +54,11 @@ log.configure({
         processors = {
           log.processors.Namer(),
           log.processors.Timestamper("%H:%M:%S"),
-          log.processors.Formatter( --
-            "%s %s [%s] %-30s",
-            { "timestamp", "logger_name", "level", "msg" }
-          ),
         },
+        formatter = log.formatters.Format( --
+          "%s [%s] %s: %-30s",
+          { "timestamp", "level", "logger_name", "msg" },
+        ),
       }),
     },
   },
@@ -73,33 +74,35 @@ local logger = log.get_logger("name")
 local log = require("structlog")
 
 log.configure({
-  lvim = {
-    level = log.level.TRACE,
+  name = {
+    level = log.level.INFO,
     sinks = {
       log.sinks.Console({
         processors = {
           log.processors.Namer(),
           log.processors.StackWriter({ "line", "file" }, { max_parents = 0 }),
           log.processors.Timestamper("%H:%M:%S"),
-          log.processors.Formatter( --
-            "%s [%s] %s: %-40s",
-            { "timestamp", "level", "logger_name", "msg" }
-          ),
         },
+        formatter = log.formatters.FormatColorizer( --
+          "%s [%s] %s: %-30s",
+          { "timestamp", "level", "logger_name", "msg" },
+          { level = log.formatters.FormatColorizer.color_level() }
+        ),
       }),
       log.sinks.File("./test.log", {
         processors = {
           log.processors.Namer(),
           log.processors.StackWriter({ "line", "file" }, { max_parents = 3 }),
           log.processors.Timestamper("%H:%M:%S"),
-          log.processors.Formatter( --
-            "%s [%s] %s: %-40s",
-            { "timestamp", "level", "logger_name", "msg" }
-          ),
         },
+        formatter = log.formatters.Format( --
+          "%s [%s] %s: %-30s",
+          { "timestamp", "level", "logger_name", "msg" }
+        ),
       }),
     },
   },
+  -- other_logger = {...}
 })
 
 local logger = log.get_logger("name")
@@ -107,14 +110,10 @@ logger:info("A log message")
 logger:warn("A log message with keyword arguments", { warning = "something happened" })
 ```
 
-``` bash
-10:45:21 [INFO] lvim: A log message                            file="formatters.lua", line=9
-10:45:21 [WARN] lvim: A log message with keyword arguments     file="formatters.lua", line=10, warning="something happened"
-```
-
+![image](https://user-images.githubusercontent.com/3267228/130428431-94a65c67-553c-4daa-843a-5316b092321b.png)
 
 ``` bash
 cat test.log:
-10:43:23 [INFO] lvim: A log message                            file="lua/lsp/null-ls/formatters.lua", line=9
-10:43:23 [WARN] lvim: A log message with keyword arguments     file="lua/lsp/null-ls/formatters.lua", line=10, warning="something happened"
+10:43:23 [INFO] name: A log message                            file="lua/lsp/null-ls/formatters.lua", line=9
+10:43:23 [WARN] name: A log message with keyword arguments     file="lua/lsp/null-ls/formatters.lua", line=10, warning="something happened"
 ```
