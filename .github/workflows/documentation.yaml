@@ -1,0 +1,29 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      #
+      - name: Install dependencies
+        run: |
+          sudo apt-get install luarocks
+          sudo luarocks install ldoc
+      #
+      - name: Generate documentation
+        run: make doc
+      #
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: doc/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
