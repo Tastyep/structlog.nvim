@@ -7,4 +7,7 @@ lint:
 format:
 	stylua . $(args)
 
-.PHONY: test lint format
+doc:
+	ldoc .
+
+.PHONY: test lint format doc
