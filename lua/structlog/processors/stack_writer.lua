@@ -1,4 +1,6 @@
---- Add entries specified by keys
+--- Read the stack trace and provide additional log entries.
+
+--- Add entries specified by keys.
 -- @param keys The entries to add: ["line", "file"]
 -- @param opts Optional configurations
 -- @param opts.max_parents The maximum number of parent directory thhat file should include

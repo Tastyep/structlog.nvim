@@ -1,6 +1,9 @@
+--- Format and Colorize log entries.
+
 local FormatColorizer = {}
 
---- Add color to the log level based on its value
+--- Add color to the log level based on its value.
+-- @function color_level
 function FormatColorizer.color_level()
   local Level = require("structlog.level")
   local colors = {
@@ -17,6 +20,7 @@ function FormatColorizer.color_level()
 end
 
 --- Use the highlight group for the log entry
+-- @function color
 -- @param color The name of the highlight group
 function FormatColorizer.color(color)
   return function(_)

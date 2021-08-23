@@ -1,5 +1,8 @@
---- Format entries listed in keys with the given format
--- Remaining entries will written as key=value
+--- Format entries using a string format.
+
+--- Format entries listed in keys with the given format.
+-- Remaining entries will written as key=value.
+-- @function Format
 -- @param format A format to pass to string.format
 -- @param keys The keys to pass as arguments to string.format
 local function Format(format, keys)

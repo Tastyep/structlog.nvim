@@ -1,10 +1,20 @@
+--- Entry point for loading structlog modules.
+-- @module structlog
+
+--- StructLog Module
+-- @table M
+-- @field Logger The logger class.
+-- @field level The log levels.
+-- @field formatters The log formatters.
+-- @field processors The log processors, attachable to sinks.
+-- @field sinks The log sinks.
 local M = {
   Logger = require("structlog.logger"),
-
   level = require("structlog.level"),
-  sinks = require("structlog.sinks"),
-  processors = require("structlog.processors"),
+
   formatters = require("structlog.formatters"),
+  processors = require("structlog.processors"),
+  sinks = require("structlog.sinks"),
 }
 
 local loggers = {}

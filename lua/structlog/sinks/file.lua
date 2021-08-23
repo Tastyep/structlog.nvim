@@ -1,3 +1,5 @@
+--- Write log entries to a file.
+
 local File = {}
 local KeyValue = require("structlog.formatters.key_value")
 
@@ -7,7 +9,7 @@ setmetatable(File, {
   end,
 })
 
---- Create a new file writer
+--- Create a new file writer.
 -- @param path The path to the logging file
 -- @param opts Optional parameters
 -- @param opts.processors The list of processors to chain the log entries in

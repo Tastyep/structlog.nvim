@@ -1,3 +1,5 @@
+--- Write log entries to nvim's console.
+
 local Console = {}
 local KeyValue = require("structlog.formatters.key_value")
 
@@ -8,6 +10,7 @@ setmetatable(Console, {
 })
 
 --- Create a new console writer
+-- @function new
 -- @param opts Optional parameters
 -- @param opts.async Make the logger async, default: True
 -- @param opts.processors The list of processors to chain the log entries in

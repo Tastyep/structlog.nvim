@@ -1,3 +1,7 @@
+--- Log levels definitions.
+
+--- The log levels.
+-- @table Levels
 local Level = {
   TRACE = 1,
   DEBUG = 2,
@@ -14,6 +18,10 @@ local names = {
   "ERROR",
 }
 
+--- Convert log level to string representation.
+-- @function name
+-- @param level The log level
+-- @return The string representation of the log level
 function Level.name(level)
   return names[level]
 end
