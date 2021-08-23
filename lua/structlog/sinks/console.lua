@@ -8,9 +8,9 @@ setmetatable(Console, {
 })
 
 --- Create a new console writer
--- @params opts Optional parameters
--- @params opts.async Make the logger async, default: True
--- @params opts.processors The list of processors to chain the log entries in
+-- @param opts Optional parameters
+-- @param opts.async Make the logger async, default: True
+-- @param opts.processors The list of processors to chain the log entries in
 function Console:new(opts)
   opts = opts or {}
 

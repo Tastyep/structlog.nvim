@@ -11,7 +11,7 @@ local loggers = {}
 
 --- Configure loggers to be retrieved later using get_logger(...)
 -- @usage configure({ logger_name = { level = log.level.INFO, sinks = { log.sinks.ConsoleSink(...), ... }}})
--- @params logger_configs The loggers' configurations
+-- @param logger_configs The loggers' configurations
 function M.configure(logger_configs)
   for name, config in pairs(logger_configs) do
     loggers[name] = M.Logger(name, config.level, config.sinks)

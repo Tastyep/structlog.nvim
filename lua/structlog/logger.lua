@@ -9,9 +9,9 @@ setmetatable(Logger, {
 local Level = require("structlog.level")
 
 --- Create a new logger
--- @params name The name of the logger
--- @params level The logging level of the logger
--- @params sinks The list of sinks to write the log entries in
+-- @param name The name of the logger
+-- @param level The logging level of the logger
+-- @param sinks The list of sinks to write the log entries in
 function Logger:new(name, level, sinks)
   local logger = {}
 
