@@ -16,6 +16,7 @@ describe("logger", function()
 
   before_each(function()
     sink.write:clear()
+    logger.context = {}
   end)
 
   describe("clone method", function()
@@ -35,6 +36,14 @@ describe("logger", function()
       local info_logger = log.Logger("test", log.level.INFO, { sink })
       info_logger:log(log.level.DEBUG, "test")
       assert.stub(sink.write).is_not.called()
+    end)
+    it("should attach the logger's context into each log", function()
+      logger.context = { key = "value" }
+      logger:log(log.level.INFO, "test")
+      assert.stub(sink.write).was_called_with(
+        match.is_ref(sink),
+        { msg = "test", level = log.level.name(log.level.INFO), key = "value", events = {} }
+      )
     end)
   end)
 

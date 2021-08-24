@@ -1,5 +1,7 @@
 --- The logger package.
 
+--- The logger class.
+-- @type Logger
 local Logger = {}
 
 setmetatable(Logger, {
@@ -21,6 +23,7 @@ function Logger:new(name, level, sinks)
   logger.name = name
   logger.level = level
   logger.sinks = sinks
+  logger.context = {}
 
   Logger.__index = Logger
   setmetatable(logger, Logger)
@@ -29,7 +32,10 @@ function Logger:new(name, level, sinks)
 end
 
 function Logger:clone()
-  return self:new(self.name, self.level, self.sinks)
+  local logger = self:new(self.name, self.level, self.sinks)
+  logger.context = vim.deepcopy(self.context)
+
+  return logger
 end
 
 local function log(logger, level, msg, events)
@@ -42,6 +48,10 @@ local function log(logger, level, msg, events)
     msg = msg,
     events = events or {},
   }
+  for key, value in pairs(logger.context) do
+    kwargs[key] = value
+  end
+
   for _, sink in ipairs(logger.sinks) do
     local sink_kwargs = vim.deepcopy(kwargs)
 
