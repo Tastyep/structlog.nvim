@@ -5,18 +5,18 @@
 local Console = {}
 local KeyValue = require("structlog.formatters.key_value")
 
+--- Create a new console writer
+-- @function Console
+-- @param opts Optional parameters
+-- @param opts.async Make the logger async, default: True
+-- @param opts.processors The list of processors to chain the log entries in
+-- @param opts.formatter The formatter to format the log entries
 setmetatable(Console, {
   __call = function(cls, ...)
     return cls:new(...)
   end,
 })
 
---- Create a new console writer
--- @function new
--- @param opts Optional parameters
--- @param opts.async Make the logger async, default: True
--- @param opts.processors The list of processors to chain the log entries in
--- @param opts.formatter The formatter to format the log entries
 function Console:new(opts)
   opts = opts or {}
 

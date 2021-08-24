@@ -5,13 +5,8 @@
 local RotatingFile = {}
 local File = require("structlog.sinks.file")
 
-setmetatable(RotatingFile, {
-  __call = function(cls, ...)
-    return cls:new(...)
-  end,
-})
-
 --- Create a new rotating file writer.
+-- @function RotatingFile
 -- @param path The path to the logging file
 -- @param opts Optional parameters
 -- @param opts.processors The list of processors to chain the log entries in
@@ -19,6 +14,12 @@ setmetatable(RotatingFile, {
 -- @param opts.max_size Maximum size of the file in bytes
 -- @param opts.max_age Maximum age of the file is seconds
 -- @param opts.time_format The time format used for renaming the log, default: "%F-%H:%M:%S"
+setmetatable(RotatingFile, {
+  __call = function(cls, ...)
+    return cls:new(...)
+  end,
+})
+
 function RotatingFile:new(path, opts)
   opts = opts or {}
 

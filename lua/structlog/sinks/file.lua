@@ -5,17 +5,18 @@
 local File = {}
 local KeyValue = require("structlog.formatters.key_value")
 
+--- Create a new file writer.
+-- @function File
+-- @param path The path to the logging file
+-- @param opts Optional parameters
+-- @param opts.processors The list of processors to chain the log entries in
+-- @param opts.formatter The formatter to format the log entries
 setmetatable(File, {
   __call = function(cls, ...)
     return cls:new(...)
   end,
 })
 
---- Create a new file writer.
--- @param path The path to the logging file
--- @param opts Optional parameters
--- @param opts.processors The list of processors to chain the log entries in
--- @param opts.formatter The formatter to format the log entries
 function File:new(path, opts)
   opts = opts or {}
 
