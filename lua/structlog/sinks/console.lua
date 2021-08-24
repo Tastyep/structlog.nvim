@@ -1,5 +1,7 @@
 --- Write log entries to nvim's console.
 
+--- The Console sink class.
+-- @type Console
 local Console = {}
 local KeyValue = require("structlog.formatters.key_value")
 

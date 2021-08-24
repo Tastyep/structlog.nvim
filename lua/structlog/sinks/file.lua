@@ -1,5 +1,7 @@
 --- Write log entries to a file.
 
+--- The File sink class.
+-- @type File
 local File = {}
 local KeyValue = require("structlog.formatters.key_value")
 
