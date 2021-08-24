@@ -16,6 +16,7 @@ setmetatable(Console, {
 -- @param opts Optional parameters
 -- @param opts.async Make the logger async, default: True
 -- @param opts.processors The list of processors to chain the log entries in
+-- @param opts.formatter The formatter to format the log entries
 function Console:new(opts)
   opts = opts or {}
 

@@ -15,6 +15,7 @@ setmetatable(File, {
 -- @param path The path to the logging file
 -- @param opts Optional parameters
 -- @param opts.processors The list of processors to chain the log entries in
+-- @param opts.formatter The formatter to format the log entries
 function File:new(path, opts)
   opts = opts or {}
 

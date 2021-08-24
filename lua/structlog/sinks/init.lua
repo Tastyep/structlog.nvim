@@ -8,9 +8,11 @@
 -- @table M
 -- @field Console The class to write to nvim console.
 -- @field File The class to write to a file.
+-- @field RotatingFile The class to write to a rotating file.
 local M = {
   Console = require("structlog.sinks.console"),
   File = require("structlog.sinks.file"),
+  RotatingFile = require("structlog.sinks.rotating_file"),
 }
 
 return M
