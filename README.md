@@ -1,5 +1,9 @@
 # structlog.nvim
 
+[![Luarocks - structlog.nvim](https://img.shields.io/static/v1?label=Luarocks&message=structlog.nvim&color=blue&logo=Lua)](https://luarocks.org/modules/Tastyep/structlog.nvim)
+[![GitHub tag](https://img.shields.io/github/tag/Tastyep/structlog.nvim?include_prereleases=&sort=semver)](https://github.com/Tastyep/structlog.nvim/releases/)
+[![License](https://img.shields.io/badge/License-MIT-blue)](#license)
+
 [![test](https://github.com/Tastyep/structlog.nvim/actions/workflows/test.yaml/badge.svg)](https://github.com/Tastyep/structlog.nvim/actions/workflows/test.yaml)
 [![sanitize](https://github.com/Tastyep/structlog.nvim/actions/workflows/sanitize.yaml/badge.svg)](https://github.com/Tastyep/structlog.nvim/actions/workflows/sanitize.yaml)
 [![Documentation](https://github.com/Tastyep/structlog.nvim/actions/workflows/documentation.yaml/badge.svg)](https://tastyep.github.io/structlog.nvim/)
