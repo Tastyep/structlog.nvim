@@ -4,7 +4,7 @@
 -- @type Logger
 local Logger = {}
 
---- Create a new logger
+--- Create a new logger.
 -- @function Logger
 -- @param name The name of the logger
 -- @param level The logging level of the logger

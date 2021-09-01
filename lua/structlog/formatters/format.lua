@@ -1,17 +1,17 @@
 --- Format entries using a string format.
 
---- Format entries listed in keys with the given format.
--- Remaining entries will written as key=value.
+--- Format the log entries listed in entries with the given format.
+-- Remaining entries will be written as key=value.
 -- @function Format
 -- @param format A format to pass to string.format
--- @param keys The keys to pass as arguments to string.format
-local function Format(format, keys)
+-- @param entries The log entries to pass as arguments to string.format
+local function Format(format, entries)
   return function(kwargs)
     local format_args = {}
 
-    for _, key in ipairs(keys) do
-      table.insert(format_args, kwargs[key])
-      kwargs[key] = nil
+    for _, entry in ipairs(entries) do
+      table.insert(format_args, kwargs[entry])
+      kwargs[entry] = nil
     end
 
     -- Push remaining entries into events
