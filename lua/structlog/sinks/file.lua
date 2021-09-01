@@ -28,7 +28,7 @@ function File:new(path, opts)
   file.iolib = opts.iolib or io
 
   File.__index = File
-  setmetatable(file, self)
+  setmetatable(file, File)
 
   return file
 end

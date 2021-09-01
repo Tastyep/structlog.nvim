@@ -27,7 +27,7 @@ function Console:new(opts)
   console.formatter = opts.formatter or KeyValue()
 
   Console.__index = Console
-  setmetatable(console, self)
+  setmetatable(console, Console)
 
   return console
 end

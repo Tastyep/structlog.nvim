@@ -34,7 +34,7 @@ function RotatingFile:new(path, opts)
   file.uv = opts.uv or vim.loop
 
   RotatingFile.__index = RotatingFile
-  setmetatable(file, self)
+  setmetatable(file, RotatingFile)
 
   return file
 end
