@@ -23,6 +23,20 @@ This dictionary is then formatted and sent out to the sink.
 
 For more details, consider reading the [documentation](https://tastyep.github.io/structlog.nvim/index.html).
 
+### Installation
+
+Using [packer.nvim](https://github.com/wbthomason/packer.nvim)
+
+``` lua
+use { "Tastyep/structlog.nvim" }
+```
+
+Using [luarocks](https://luarocks.org/)
+
+``` bash
+luarocks install --local structlog.nvim
+```
+
 ### Usage
 #### Create and Use
 
