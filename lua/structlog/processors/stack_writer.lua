@@ -1,6 +1,7 @@
 --- Read the stack trace and provide additional log entries.
 
 --- Add entries specified by keys.
+-- @function StackWriter
 -- @param keys The entries to add: ["line", "file"]
 -- @param opts Optional configurations
 -- @param opts.max_parents The maximum number of parent directory that file should include
