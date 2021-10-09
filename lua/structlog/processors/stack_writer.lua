@@ -3,12 +3,14 @@
 --- Add entries specified by keys.
 -- @param keys The entries to add: ["line", "file"]
 -- @param opts Optional configurations
--- @param opts.max_parents The maximum number of parent directory thhat file should include
+-- @param opts.max_parents The maximum number of parent directory that file should include
+-- @param opts.stack_level The stack level to inspect, starts from the caller of the logger's method, defaults to 0
 local function StackWriter(keys, opts)
   opts = opts or {}
+  opts.stack_level = opts.stack_level or 0
 
   local debugger = opts.debugger or function()
-    return debug.getinfo(4, "Sl")
+    return debug.getinfo(4 + opts.stack_level, "Sl")
   end
 
   local handlers = {
