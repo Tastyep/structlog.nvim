@@ -42,6 +42,7 @@ describe("logger", function()
       logger:log(log.level.INFO, "test")
       assert.stub(sink.write).was_called_with(
         match.is_ref(sink),
+        log.level.INFO,
         { msg = "test", level = log.level.name(log.level.INFO), key = "value", events = {} }
       )
     end)
@@ -61,7 +62,11 @@ describe("logger", function()
         local level_name = log.level.name(level)
 
         logger[method](logger, msg, events)
-        assert.stub(sink.write).was_called_with(match.is_ref(sink), { msg = msg, level = level_name, events = events })
+        assert.stub(sink.write).was_called_with(
+          match.is_ref(sink),
+          log.level[level_name],
+          { msg = msg, level = level_name, events = events }
+        )
       end)
     end)
   end

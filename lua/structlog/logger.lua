@@ -60,7 +60,7 @@ local function log(logger, level, msg, events)
     end
 
     local message = sink.formatter(sink_kwargs)
-    sink:write(message)
+    sink:write(level, message)
   end
 end
 

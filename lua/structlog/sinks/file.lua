@@ -33,8 +33,9 @@ function File:new(path, opts)
   return file
 end
 
-function File:write(message)
+function File:write(_, message)
   local fp = assert(self.iolib.open(self.path, "a"))
+
   fp:write(message)
   fp:write("\n")
   fp:close()

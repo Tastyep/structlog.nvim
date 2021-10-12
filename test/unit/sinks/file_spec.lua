@@ -19,7 +19,8 @@ describe("File", function()
   local file = File(file_path, { iolib = iolib })
   it("should use the io lib to write to file", function()
     local msg = "test"
-    file:write(msg)
+    local level = log.level.INFO
+    file:write(level, msg)
 
     assert.stub(fp.write).was_called_with(match.is_ref(fp), msg)
     assert.stub(fp.write).was_called_with(match.is_ref(fp), "\n")

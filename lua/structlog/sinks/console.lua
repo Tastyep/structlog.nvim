@@ -32,7 +32,7 @@ function Console:new(opts)
   return console
 end
 
-function Console:write(message)
+function Console:write(_, message)
   local function impl()
     vim.api.nvim_echo(message, true, {})
   end

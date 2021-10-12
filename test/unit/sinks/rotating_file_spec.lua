@@ -58,7 +58,8 @@ describe("RotatingFile", function()
 
   it("should use the io lib to write to the file sink", function()
     local file = RotatingFile(file_path, { iolib = iolib })
-    file:write("test")
+    local level = log.level.INFO
+    file:write(level, "test")
 
     assert.stub(fp.write).was_called_with(match.is_ref(fp), "test")
     assert.stub(fp.write).was_called_with(match.is_ref(fp), "\n")
@@ -72,31 +73,36 @@ describe("RotatingFile", function()
     }
     stub(uv_cpy, "fs_rename")
     local file = RotatingFile(file_path, { max_size = 0, iolib = iolib, uv = uv_cpy })
-    file:write("test")
+    local level = log.level.INFO
+    file:write(level, "test")
 
     assert.stub(uv_cpy.fs_rename).was_not_called()
   end)
   it("should not rotate the file if max_size is not exceeded", function()
     local file = RotatingFile(file_path, { max_size = math.huge, iolib = iolib, uv = uv })
-    file:write("test")
+    local level = log.level.INFO
+    file:write(level, "test")
 
     assert.stub(uv.fs_rename).was_not_called()
   end)
   it("should not rotate the file if max_age is not exceeded", function()
     local file = RotatingFile(file_path, { max_age = math.huge, iolib = iolib, uv = uv })
-    file:write("test")
+    local level = log.level.INFO
+    file:write(level, "test")
 
     assert.stub(uv.fs_rename).was_not_called()
   end)
   it("should rotate the file if max_size is exceeded", function()
     local file = RotatingFile(file_path, { max_size = 0, iolib = iolib, uv = uv })
-    file:write("test")
+    local level = log.level.INFO
+    file:write(level, "test")
 
     assert.stub(uv.fs_rename).was_called()
   end)
   it("should rotate the file if max_age is exceeded", function()
     local file = RotatingFile(file_path, { max_age = 0, iolib = iolib, uv = uv })
-    file:write("test")
+    local level = log.level.INFO
+    file:write(level, "test")
 
     assert.stub(uv.fs_rename).was_called()
   end)

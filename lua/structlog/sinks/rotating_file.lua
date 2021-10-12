@@ -39,7 +39,7 @@ function RotatingFile:new(path, opts)
   return file
 end
 
-function RotatingFile:write(message)
+function RotatingFile:write(level, message)
   local stat = self.uv.fs_stat(self.path)
   if stat then
     local cu_time = os.time()
@@ -60,7 +60,7 @@ function RotatingFile:write(message)
     end
   end
 
-  self.sink:write(message)
+  self.sink:write(level, message)
 end
 
 return RotatingFile
