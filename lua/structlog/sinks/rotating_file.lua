@@ -7,6 +7,7 @@ local File = require("structlog.sinks.file")
 
 --- Create a new rotating file writer.
 -- @function RotatingFile
+-- @param level The logging level of the sink
 -- @param path The path to the logging file
 -- @param opts Optional parameters
 -- @param opts.processors The list of processors to chain the log entries in
@@ -20,12 +21,13 @@ setmetatable(RotatingFile, {
   end,
 })
 
-function RotatingFile:new(path, opts)
+function RotatingFile:new(level, path, opts)
   opts = opts or {}
 
   local file = {}
 
-  file.sink = File(path, opts)
+  file.level = level
+  file.sink = File(level, path, opts)
   file.path = path
   file.max_size = opts.max_size
   file.max_age = opts.max_age

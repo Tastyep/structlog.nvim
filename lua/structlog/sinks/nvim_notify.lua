@@ -8,6 +8,7 @@ local Level = require("structlog.level")
 
 --- Create a writer for nvim-notify
 -- @function NvimNotify
+-- @param level The logging level of the sink
 -- @param opts Optional parameters
 -- @param opts.processors The list of processors to chain the log entries in
 -- @param opts.formatter The formatter to format the log entries
@@ -17,7 +18,7 @@ setmetatable(NvimNotify, {
   end,
 })
 
-function NvimNotify:new(opts)
+function NvimNotify:new(level, opts)
   opts = opts or {}
 
   local notify = {}
@@ -27,6 +28,7 @@ function NvimNotify:new(opts)
     error("nvim-notify not found")
   end
 
+  notify.level = level
   notify.impl = opts.impl or impl
   notify.processors = opts.processors or {}
   notify.formatter = opts.formatter or KeyValue()

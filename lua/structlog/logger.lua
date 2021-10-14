@@ -7,7 +7,6 @@ local Logger = {}
 --- Create a new logger.
 -- @function Logger
 -- @param name The name of the logger
--- @param level The logging level of the logger
 -- @param sinks The list of sinks to write the log entries in
 setmetatable(Logger, {
   __call = function(cls, ...)
@@ -17,11 +16,10 @@ setmetatable(Logger, {
 
 local Level = require("structlog.level")
 
-function Logger:new(name, level, sinks)
+function Logger:new(name, sinks)
   local logger = {}
 
   logger.name = name
-  logger.level = level
   logger.sinks = sinks
   logger.context = {}
 
@@ -32,17 +30,13 @@ function Logger:new(name, level, sinks)
 end
 
 function Logger:clone()
-  local logger = self:new(self.name, self.level, self.sinks)
+  local logger = self:new(self.name, self.sinks)
   logger.context = vim.deepcopy(self.context)
 
   return logger
 end
 
 local function log(logger, level, msg, events)
-  if level < logger.level then
-    return
-  end
-
   local kwargs = {
     level = Level.name(level),
     msg = msg,
@@ -53,14 +47,16 @@ local function log(logger, level, msg, events)
   end
 
   for _, sink in ipairs(logger.sinks) do
-    local sink_kwargs = vim.deepcopy(kwargs)
+    if level >= sink.level then
+      local sink_kwargs = vim.deepcopy(kwargs)
 
-    for _, processor in ipairs(sink.processors) do
-      sink_kwargs = processor(logger, sink_kwargs)
+      for _, processor in ipairs(sink.processors) do
+        sink_kwargs = processor(logger, sink_kwargs)
+      end
+
+      local message = sink.formatter(sink_kwargs)
+      sink:write(level, message)
     end
-
-    local message = sink.formatter(sink_kwargs)
-    sink:write(level, message)
   end
 end
 

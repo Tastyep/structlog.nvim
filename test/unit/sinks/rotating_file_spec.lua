@@ -57,7 +57,7 @@ describe("RotatingFile", function()
   local file_path = "./path.log"
 
   it("should use the io lib to write to the file sink", function()
-    local file = RotatingFile(file_path, { iolib = iolib })
+    local file = RotatingFile(log.level.TRACE, file_path, { iolib = iolib })
     local level = log.level.INFO
     file:write(level, "test")
 
@@ -72,35 +72,35 @@ describe("RotatingFile", function()
       end,
     }
     stub(uv_cpy, "fs_rename")
-    local file = RotatingFile(file_path, { max_size = 0, iolib = iolib, uv = uv_cpy })
+    local file = RotatingFile(log.level.TRACE, file_path, { max_size = 0, iolib = iolib, uv = uv_cpy })
     local level = log.level.INFO
     file:write(level, "test")
 
     assert.stub(uv_cpy.fs_rename).was_not_called()
   end)
   it("should not rotate the file if max_size is not exceeded", function()
-    local file = RotatingFile(file_path, { max_size = math.huge, iolib = iolib, uv = uv })
+    local file = RotatingFile(log.level.TRACE, file_path, { max_size = math.huge, iolib = iolib, uv = uv })
     local level = log.level.INFO
     file:write(level, "test")
 
     assert.stub(uv.fs_rename).was_not_called()
   end)
   it("should not rotate the file if max_age is not exceeded", function()
-    local file = RotatingFile(file_path, { max_age = math.huge, iolib = iolib, uv = uv })
+    local file = RotatingFile(log.level.TRACE, file_path, { max_age = math.huge, iolib = iolib, uv = uv })
     local level = log.level.INFO
     file:write(level, "test")
 
     assert.stub(uv.fs_rename).was_not_called()
   end)
   it("should rotate the file if max_size is exceeded", function()
-    local file = RotatingFile(file_path, { max_size = 0, iolib = iolib, uv = uv })
+    local file = RotatingFile(log.level.TRACE, file_path, { max_size = 0, iolib = iolib, uv = uv })
     local level = log.level.INFO
     file:write(level, "test")
 
     assert.stub(uv.fs_rename).was_called()
   end)
   it("should rotate the file if max_age is exceeded", function()
-    local file = RotatingFile(file_path, { max_age = 0, iolib = iolib, uv = uv })
+    local file = RotatingFile(log.level.TRACE, file_path, { max_age = 0, iolib = iolib, uv = uv })
     local level = log.level.INFO
     file:write(level, "test")
 

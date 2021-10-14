@@ -10,7 +10,7 @@ describe("NvimNotify", function()
     impl.execute(a, b)
   end
 
-  local notify = NvimNotify({ impl = adapter })
+  local notify = NvimNotify(log.level.TRACE, { impl = adapter })
 
   it("should write to the stub impl", function()
     local msg = "test"

@@ -7,6 +7,7 @@ local KeyValue = require("structlog.formatters.key_value")
 
 --- Create a new console writer
 -- @function Console
+-- @param level The logging level of the sink
 -- @param opts Optional parameters
 -- @param opts.async Make the logger async, default: True
 -- @param opts.processors The list of processors to chain the log entries in
@@ -17,11 +18,12 @@ setmetatable(Console, {
   end,
 })
 
-function Console:new(opts)
+function Console:new(level, opts)
   opts = opts or {}
 
   local console = {}
 
+  console.level = level
   console.async = opts.async or true
   console.processors = opts.processors or {}
   console.formatter = opts.formatter or KeyValue()
