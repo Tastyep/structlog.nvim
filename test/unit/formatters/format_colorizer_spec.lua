@@ -5,11 +5,11 @@ describe("FormatColorizer", function()
   it("should format an entry's message into a table of {text, color}", function()
     local formatter = FormatColorizer("[%s] %-5s", { "level", "msg" }, { level = FormatColorizer.color("RED") })
 
-    local entry = { level = log.level.INFO, msg = "test", events = {} }
+    local entry = { level = log.level.name(log.level.INFO), msg = "test", events = {} }
     local expected = vim.deepcopy(entry)
     expected.msg = {
       { "[" },
-      { tostring(entry.level), "RED" },
+      { entry.level, "RED" },
       { "] " },
       { entry.msg .. " " },
     }
@@ -31,6 +31,23 @@ describe("FormatColorizer", function()
       { "] " },
       { entry.msg .. " " },
       { ' key="value"', "Comment" },
+    }
+    local output = formatter(vim.deepcopy(entry))
+    assert.are.same(expected, output)
+  end)
+
+  it("should discard blacklisted entries", function()
+    local formatter = FormatColorizer(
+      "%s",
+      { "msg" },
+      { msg = FormatColorizer.color("WHITE") },
+      { blacklist = { "level" } }
+    )
+
+    local entry = { level = log.level.name(log.level.INFO), msg = "test", events = {} }
+    local expected = vim.deepcopy(entry)
+    expected.msg = {
+      { entry.msg, "WHITE" },
     }
     local output = formatter(vim.deepcopy(entry))
     assert.are.same(expected, output)

@@ -5,11 +5,19 @@
 -- @function Format
 -- @param format A format to pass to string.format
 -- @param entries The log entries to pass as arguments to string.format
-local function Format(format, entries)
+-- @param opts Optional parameters
+-- @param opts.blacklist A list of entries to not format, default: {}
+local function Format(format, entries, opts)
+  opts = opts or {}
+  opts.blacklist = opts.blacklist or {}
+
   return function(kwargs)
     local format_args = {}
 
     local consumed_events = { events = true }
+    for _, entry in ipairs(opts.blacklist) do
+      consumed_events[entry] = true
+    end
     for _, entry in ipairs(entries) do
       table.insert(format_args, kwargs[entry])
       consumed_events[entry] = true

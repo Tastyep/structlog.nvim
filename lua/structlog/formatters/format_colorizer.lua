@@ -8,24 +8,35 @@ local FormatColorizer = {}
 -- @param format A format to pass to string.format
 -- @param entries The log entries to pass as arguments to string.format
 -- @param colors A map of log entries to colorizer functions
+-- @param opts Optional parameters
+-- @param opts.blacklist A list of entries to not format, default: {}
 setmetatable(FormatColorizer, {
   __call = function(cls, ...)
     return cls:new(...)
   end,
 })
 
-function FormatColorizer:new(format, entries, colors)
+function FormatColorizer:new(format, entries, colors, opts)
+  opts = opts or {}
+  opts.blacklist = opts.blacklist or {}
+
   return function(kwargs)
     local format_cpy = format
 
     local output = {}
     local consumed_events = { events = true }
+    for _, entry in ipairs(opts.blacklist) do
+      consumed_events[entry] = true
+    end
     for _, entry in ipairs(entries) do
       local match = format_cpy:match("%%[^a-zA-Z]*[a-zA-Z]")
       local idx = format_cpy:find(match, 1, true)
-      local plain = format_cpy:sub(1, idx - 1)
+
+      if idx > 1 then
+        local plain = format_cpy:sub(1, idx - 1)
+        table.insert(output, { plain, nil })
+      end
       format_cpy = format_cpy:sub(idx + match:len())
-      table.insert(output, { plain, nil })
 
       local color = colors[entry] and colors[entry](kwargs[entry]) or nil
       table.insert(output, { match:format(kwargs[entry]), color })
