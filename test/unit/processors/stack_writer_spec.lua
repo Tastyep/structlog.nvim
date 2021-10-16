@@ -1,7 +1,7 @@
 local log = require("structlog")
 local processors = log.processors
 
-local logger = log.Logger("test", log.level.INFO, {})
+local logger = log.Logger("test", {})
 
 describe("StackWriter", function()
   describe("line option", function()
