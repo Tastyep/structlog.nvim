@@ -12,6 +12,8 @@ local Level = require("structlog.level")
 -- @param opts Optional parameters
 -- @param opts.processors The list of processors to chain the log entries in
 -- @param opts.formatter The formatter to format the log entries
+-- @param opts.params_map The mapping between log entries and nvim-notify's parameters, default: {}
+-- @usage opts.params_map = {title="logger_name", timeout="timeout"}
 setmetatable(NvimNotify, {
   __call = function(cls, ...)
     return cls:new(...)
@@ -32,6 +34,7 @@ function NvimNotify:new(level, opts)
   notify.impl = opts.impl or impl
   notify.processors = opts.processors or {}
   notify.formatter = opts.formatter or KeyValue()
+  notify.params_map = opts.params_map or {}
 
   NvimNotify.__index = NvimNotify
   setmetatable(notify, NvimNotify)
@@ -39,8 +42,12 @@ function NvimNotify:new(level, opts)
   return notify
 end
 
-function NvimNotify:write(level, message)
-  self.impl(message, Level.name(level))
+function NvimNotify:write(level, entry)
+  local params = {}
+  for name, key in pairs(self.params_map) do
+    params[name] = entry[key]
+  end
+  self.impl(entry.msg, Level.name(level), params)
 end
 
 return NvimNotify
