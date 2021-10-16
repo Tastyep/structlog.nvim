@@ -2,27 +2,30 @@ local log = require("structlog")
 local formatters = log.formatters
 
 describe("Format", function()
-  it("should format kwargs into a string", function()
+  it("should format the log entry's message", function()
     local formatter = formatters.Format("[%s] %s", { "level", "msg" })
 
-    local kwargs = { level = log.level.INFO, msg = "test", events = {} }
-    local expected = string.format("[%s] %s", kwargs.level, kwargs.msg)
-    local message = formatter(vim.deepcopy(kwargs))
-    assert.equals(expected, message)
+    local entry = { level = log.level.INFO, msg = "test", events = {} }
+    local expected = vim.deepcopy(entry)
+    expected.msg = string.format("[%s] %s", entry.level, entry.msg)
+
+    local output = formatter(vim.deepcopy(entry))
+    assert.is.same(expected, output)
   end)
 
-  it("should format kwargs into a string and add remaining events if present", function()
+  it("should format the log entry's message with provided user events", function()
     local formatter = formatters.Format("[%s] %s", { "level", "msg" })
 
-    local kwargs = { level = log.level.INFO, msg = "test", test = 1, events = { nest = { "test" } } }
-    local expected = string.format(
+    local entry = { level = log.level.INFO, msg = "test", test = 1, events = { nest = { "test" } } }
+    local expected = vim.deepcopy(entry)
+    expected.msg = string.format(
       "[%s] %s nest=%s, test=%d",
-      kwargs.level,
-      kwargs.msg,
-      vim.inspect(kwargs.events.nest, { newline = "" }),
-      kwargs.test
+      entry.level,
+      entry.msg,
+      vim.inspect(entry.events.nest, { newline = "" }),
+      entry.test
     )
-    local message = formatter(vim.deepcopy(kwargs))
-    assert.equals(expected, message)
+    local output = formatter(vim.deepcopy(entry))
+    assert.is.same(expected, output)
   end)
 end)

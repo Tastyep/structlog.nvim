@@ -54,8 +54,8 @@ local function log(logger, level, msg, events)
         sink_kwargs = processor(logger, sink_kwargs)
       end
 
-      local message = sink.formatter(sink_kwargs)
-      sink:write(level, message)
+      sink_kwargs = sink.formatter(sink_kwargs)
+      sink:write(level, sink_kwargs)
     end
   end
 end

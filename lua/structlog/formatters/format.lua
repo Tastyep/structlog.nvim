@@ -9,26 +9,28 @@ local function Format(format, entries)
   return function(kwargs)
     local format_args = {}
 
+    local consumed_events = { events = true }
     for _, entry in ipairs(entries) do
       table.insert(format_args, kwargs[entry])
-      kwargs[entry] = nil
+      consumed_events[entry] = true
     end
+    kwargs.msg = string.format(format, unpack(format_args))
 
     -- Push remaining entries into events
+    local events = vim.deepcopy(kwargs.events)
     for k, v in pairs(kwargs) do
-      if k ~= "events" then
-        kwargs.events[k] = v
+      if not consumed_events[k] then
+        events[k] = v
       end
     end
-    local output = string.format(format, unpack(format_args))
 
-    if not vim.tbl_isempty(kwargs.events) then
-      local events = vim.inspect(kwargs.events, { newline = "", indent = " " }):sub(2, -2)
+    if not vim.tbl_isempty(events) then
+      events = vim.inspect(events, { newline = "", indent = " " }):sub(2, -2)
       -- TODO: Implement our own inspect to avoid modifying user message
-      output = output .. events:gsub(" = ", "=")
+      kwargs.msg = kwargs.msg .. events:gsub(" = ", "=")
     end
 
-    return output
+    return kwargs
   end
 end
 

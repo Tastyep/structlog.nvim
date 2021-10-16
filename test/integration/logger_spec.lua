@@ -21,10 +21,13 @@ describe("Log message", function()
 
     logger:info("message", { key = "value" })
 
-    assert.stub(sink.write).was_called_with(
-      match.ref(sink),
-      log.level.INFO,
-      '[INFO] test: message context="test", key="value"'
-    )
+    local expected_entry = {
+      context = "test",
+      events = { key = "value" },
+      level = log.level.name(log.level.INFO),
+      logger_name = "test",
+      msg = '[INFO] test: message context="test", key="value"',
+    }
+    assert.stub(sink.write).was_called_with(match.ref(sink), log.level.INFO, expected_entry)
   end)
 end)

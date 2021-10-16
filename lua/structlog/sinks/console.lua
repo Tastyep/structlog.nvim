@@ -34,7 +34,9 @@ function Console:new(level, opts)
   return console
 end
 
-function Console:write(_, message)
+function Console:write(_, entry)
+  local message = entry.msg
+
   local function impl()
     vim.api.nvim_echo(message, true, {})
   end

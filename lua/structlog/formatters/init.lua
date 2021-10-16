@@ -1,8 +1,8 @@
 --- Entry point for loading formatters.
 -- StructlLog is completely flexible about how the resulting log entry is emitted.
--- Since each log entry is a dictionary, it can be formatted to any format.
+-- Since each log entry is a dictionary, its message can be formatted to any format.
 --
--- Internally, formatters are processors whose return value (usually a string)
+-- Internally, formatters are processors whose return value (a log entry with formatted message)
 -- is passed into sinks that are responsible for the output of your message.
 -- StructLog comes with multiple useful formatters out-of-the-box.
 -- @module structlog.formatters

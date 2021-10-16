@@ -19,6 +19,7 @@ function FormatColorizer:new(format, entries, colors)
     local format_cpy = format
 
     local output = {}
+    local consumed_events = { events = true }
     for _, entry in ipairs(entries) do
       local match = format_cpy:match("%%[^a-zA-Z]*[a-zA-Z]")
       local idx = format_cpy:find(match, 1, true)
@@ -28,23 +29,25 @@ function FormatColorizer:new(format, entries, colors)
 
       local color = colors[entry] and colors[entry](kwargs[entry]) or nil
       table.insert(output, { match:format(kwargs[entry]), color })
-      kwargs[entry] = nil
+      consumed_events[entry] = true
     end
 
     -- Push remaining entries into events
+    local events = vim.deepcopy(kwargs.events)
     for k, v in pairs(kwargs) do
-      if k ~= "events" then
-        kwargs.events[k] = v
+      if not consumed_events[k] then
+        events[k] = v
       end
     end
-    if not vim.tbl_isempty(kwargs.events) then
-      local events = vim.inspect(kwargs.events, { newline = "", indent = " " }):sub(2, -2)
+    if not vim.tbl_isempty(events) then
+      events = vim.inspect(events, { newline = "", indent = " " }):sub(2, -2)
       -- TODO: Implement our own inspect to avoid modifying user message
-      local color = colors.events and colors.events(kwargs.events) or nil
+      local color = colors.events and colors.events(events) or nil
       table.insert(output, { events:gsub(" = ", "="), color })
     end
 
-    return output
+    kwargs.msg = output
+    return kwargs
   end
 end
 
