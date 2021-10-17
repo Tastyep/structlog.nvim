@@ -43,17 +43,20 @@ luarocks install --local structlog.nvim
 ``` lua
 local log = require("structlog")
 
-local logger = log.Logger("name", log.level.INFO, {
-  log.sinks.Console({
-    processors = {
-      log.processors.Namer(),
-      log.processors.Timestamper("%H:%M:%S"),
-    },
-    formatter = log.formatters.Format( --
-      "%s [%s] %s: %-30s",
-      { "timestamp", "level", "logger_name", "msg" }
-    ),
-  }),
+local logger = log.Logger("name", {
+  log.sinks.Console(
+    log.level.INFO
+    {
+      processors = {
+        log.processors.Namer(),
+        log.processors.Timestamper("%H:%M:%S"),
+      },
+      formatter = log.formatters.Format( --
+        "%s [%s] %s: %-30s",
+        { "timestamp", "level", "logger_name", "msg" }
+      ),
+    }
+  ),
 })
 
 logger:info("A log message")
@@ -72,18 +75,20 @@ local log = require("structlog")
 
 log.configure({
   name = {
-    level = log.level.INFO,
     sinks = {
-      log.sinks.Console({
-        processors = {
-          log.processors.Namer(),
-          log.processors.Timestamper("%H:%M:%S"),
-        },
-        formatter = log.formatters.Format( --
-          "%s [%s] %s: %-30s",
-          { "timestamp", "level", "logger_name", "msg" },
-        ),
-      }),
+      log.sinks.Console(
+        log.level.INFO,
+        {
+          processors = {
+            log.processors.Namer(),
+            log.processors.Timestamper("%H:%M:%S"),
+          },
+          formatter = log.formatters.Format( --
+            "%s [%s] %s: %-30s",
+            { "timestamp", "level", "logger_name", "msg" },
+          ),
+        }
+      ),
     },
   },
   other_logger = {...},
@@ -99,31 +104,50 @@ local log = require("structlog")
 
 log.configure({
   name = {
-    level = log.level.INFO,
     sinks = {
-      log.sinks.Console({
-        processors = {
-          log.processors.Namer(),
-          log.processors.StackWriter({ "line", "file" }, { max_parents = 0 }),
-          log.processors.Timestamper("%H:%M:%S"),
-        },
-        formatter = log.formatters.FormatColorizer( --
-          "%s [%s] %s: %-30s",
-          { "timestamp", "level", "logger_name", "msg" },
-          { level = log.formatters.FormatColorizer.color_level() }
-        ),
-      }),
-      log.sinks.File("./test.log", {
-        processors = {
-          log.processors.Namer(),
-          log.processors.StackWriter({ "line", "file" }, { max_parents = 3 }),
-          log.processors.Timestamper("%H:%M:%S"),
-        },
-        formatter = log.formatters.Format( --
-          "%s [%s] %s: %-30s",
-          { "timestamp", "level", "logger_name", "msg" }
-        ),
-      }),
+      log.sinks.Console(
+        log.level.INFO,
+        {
+          processors = {
+            log.processors.Namer(),
+            log.processors.StackWriter({ "line", "file" }, { max_parents = 0, stack_level = 0 }),
+            log.processors.Timestamper("%H:%M:%S"),
+          },
+          formatter = log.formatters.FormatColorizer( --
+            "%s [%s] %s: %-30s",
+            { "timestamp", "level", "logger_name", "msg" },
+            { level = log.formatters.FormatColorizer.color_level() }
+          ),
+        }
+      ),
+      log.sinks.NvimNotify(
+        log.level.WARN,
+        {
+          processors = {
+            log.processors.Namer(),
+          },
+          formatter = log.formatters.Format( --
+            "%s",
+            { "msg" },
+            { blacklist = { "level", "logger_name" } }
+          ),
+          params_map = { title = "logger_name" },
+        }),
+      log.sinks.File(
+        log.level.TRACE,
+        "./test.log",
+        {
+          processors = {
+            log.processors.Namer(),
+            log.processors.StackWriter({ "line", "file" }, { max_parents = 3 }),
+            log.processors.Timestamper("%H:%M:%S"),
+          },
+          formatter = log.formatters.Format( --
+            "%s [%s] %s: %-30s",
+            { "timestamp", "level", "logger_name", "msg" }
+          ),
+        }
+      ),
     },
   },
   -- other_logger = {...}
@@ -135,6 +159,7 @@ logger:warn("A log message with keyword arguments", { warning = "something happe
 ```
 
 ![image](https://user-images.githubusercontent.com/3267228/130428431-94a65c67-553c-4daa-843a-5316b092321b.png)
+![image](https://user-images.githubusercontent.com/3267228/137624268-8de03336-ee38-44d8-b491-4bc7f3111f87.png)
 
 ``` bash
 cat test.log:
