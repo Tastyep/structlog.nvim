@@ -39,4 +39,15 @@ describe("Format", function()
     local output = formatter(vim.deepcopy(entry))
     assert.is.same(expected, output)
   end)
+
+  it("should discard all unconsumed entries", function()
+    local formatter = formatters.Format("%s", { "msg" }, { blacklist_all = true })
+
+    local entry = { level = log.level.name(log.level.INFO), msg = "test", events = {} }
+    local expected = vim.deepcopy(entry)
+    expected.msg = string.format("%s", entry.msg)
+
+    local output = formatter(vim.deepcopy(entry))
+    assert.is.same(expected, output)
+  end)
 end)

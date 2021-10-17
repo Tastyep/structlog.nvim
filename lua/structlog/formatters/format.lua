@@ -7,9 +7,11 @@
 -- @param entries The log entries to pass as arguments to string.format
 -- @param opts Optional parameters
 -- @param opts.blacklist A list of entries to not format, default: {}
+-- @param opts.blacklist_all A boolean value indicating whether to format unformatted entries, default: false
 local function Format(format, entries, opts)
   opts = opts or {}
   opts.blacklist = opts.blacklist or {}
+  opts.blacklist_all = opts.blacklist_all == true
 
   return function(kwargs)
     local format_args = {}
@@ -24,7 +26,11 @@ local function Format(format, entries, opts)
     end
     kwargs.msg = string.format(format, unpack(format_args))
 
-    -- Push remaining entries into events
+    if opts.blacklist_all then
+      return kwargs
+    end
+
+    -- Push remaining entries into events and format as key=value
     local events = vim.deepcopy(kwargs.events)
     for k, v in pairs(kwargs) do
       if not consumed_events[k] then

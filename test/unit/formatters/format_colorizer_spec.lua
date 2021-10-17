@@ -52,4 +52,21 @@ describe("FormatColorizer", function()
     local output = formatter(vim.deepcopy(entry))
     assert.are.same(expected, output)
   end)
+
+  it("should discard all unconsumed entries", function()
+    local formatter = FormatColorizer(
+      "%s",
+      { "msg" },
+      { msg = FormatColorizer.color("WHITE") },
+      { blacklist_all = true }
+    )
+
+    local entry = { level = log.level.name(log.level.INFO), msg = "test", events = {} }
+    local expected = vim.deepcopy(entry)
+    expected.msg = {
+      { entry.msg, "WHITE" },
+    }
+    local output = formatter(vim.deepcopy(entry))
+    assert.are.same(expected, output)
+  end)
 end)

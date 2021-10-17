@@ -10,6 +10,7 @@ local FormatColorizer = {}
 -- @param colors A map of log entries to colorizer functions
 -- @param opts Optional parameters
 -- @param opts.blacklist A list of entries to not format, default: {}
+-- @param opts.blacklist_all A boolean value indicating whether to format unformatted entries, default: false
 setmetatable(FormatColorizer, {
   __call = function(cls, ...)
     return cls:new(...)
@@ -19,6 +20,7 @@ setmetatable(FormatColorizer, {
 function FormatColorizer:new(format, entries, colors, opts)
   opts = opts or {}
   opts.blacklist = opts.blacklist or {}
+  opts.blacklist_all = opts.blacklist_all == true
 
   return function(kwargs)
     local format_cpy = format
@@ -42,8 +44,13 @@ function FormatColorizer:new(format, entries, colors, opts)
       table.insert(output, { match:format(kwargs[entry]), color })
       consumed_events[entry] = true
     end
+    kwargs.msg = output
 
-    -- Push remaining entries into events
+    if opts.blacklist_all then
+      return kwargs
+    end
+
+    -- Push remaining entries into events and format as key=value
     local events = vim.deepcopy(kwargs.events)
     for k, v in pairs(kwargs) do
       if not consumed_events[k] then
@@ -54,10 +61,9 @@ function FormatColorizer:new(format, entries, colors, opts)
       events = vim.inspect(events, { newline = "", indent = " " }):sub(2, -2)
       -- TODO: Implement our own inspect to avoid modifying user message
       local color = colors.events and colors.events(events) or nil
-      table.insert(output, { events:gsub(" = ", "="), color })
+      table.insert(kwargs.msg, { events:gsub(" = ", "="), color })
     end
 
-    kwargs.msg = output
     return kwargs
   end
 end
