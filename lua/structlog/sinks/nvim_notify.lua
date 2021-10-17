@@ -42,12 +42,12 @@ function NvimNotify:new(level, opts)
   return notify
 end
 
-function NvimNotify:write(level, entry)
+function NvimNotify:write(entry)
   local params = {}
   for name, key in pairs(self.params_map) do
     params[name] = entry[key]
   end
-  self.impl(entry.msg, Level.name(level), params)
+  self.impl(entry.msg, entry.level, params)
 end
 
 return NvimNotify

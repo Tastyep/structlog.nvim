@@ -20,7 +20,7 @@ describe("File", function()
   it("should use the io lib to write to file", function()
     local msg = "test"
     local level = log.level.INFO
-    file:write(level, { msg = msg, level = log.level.name(level) })
+    file:write({ msg = msg, level = log.level.name(level) })
 
     assert.stub(fp.write).was_called_with(match.is_ref(fp), msg)
     assert.stub(fp.write).was_called_with(match.is_ref(fp), "\n")

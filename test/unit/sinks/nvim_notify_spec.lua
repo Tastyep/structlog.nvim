@@ -15,7 +15,7 @@ describe("NvimNotify", function()
     local msg = "test"
     local level = log.level.INFO
     local entry = { msg = msg, level = log.level.name(level) }
-    notify:write(level, entry)
+    notify:write(entry)
 
     assert.stub(impl.execute).was_called_with(entry.msg, entry.level, {})
   end)
@@ -24,7 +24,7 @@ describe("NvimNotify", function()
     local notify = NvimNotify(log.level.TRACE, { impl = adapter, params_map = { title = "name" } })
     local level = log.level.INFO
     local entry = { msg = "test", level = log.level.name(level), name = "toto", events = {} }
-    notify:write(level, entry)
+    notify:write(entry)
 
     assert.stub(impl.execute).was_called_with(entry.msg, log.level.name(level), { title = entry.name })
   end)

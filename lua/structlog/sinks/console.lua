@@ -34,7 +34,7 @@ function Console:new(level, opts)
   return console
 end
 
-function Console:write(_, entry)
+function Console:write(entry)
   local message = entry.msg
 
   local function impl()

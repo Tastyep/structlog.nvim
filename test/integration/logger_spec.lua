@@ -28,6 +28,6 @@ describe("Log message", function()
       logger_name = "test",
       msg = '[INFO] test: message context="test", key="value"',
     }
-    assert.stub(sink.write).was_called_with(match.ref(sink), log.level.INFO, expected_entry)
+    assert.stub(sink.write).was_called_with(match.ref(sink), expected_entry)
   end)
 end)

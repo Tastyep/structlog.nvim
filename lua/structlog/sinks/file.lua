@@ -35,7 +35,7 @@ function File:new(level, path, opts)
   return file
 end
 
-function File:write(_, entry)
+function File:write(entry)
   local fp = assert(self.iolib.open(self.path, "a"))
 
   fp:write(entry.msg)
