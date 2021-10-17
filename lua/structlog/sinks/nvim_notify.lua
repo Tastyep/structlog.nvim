@@ -4,7 +4,6 @@
 -- @type NvimNotify
 local NvimNotify = {}
 local KeyValue = require("structlog.formatters.key_value")
-local Level = require("structlog.level")
 
 --- Create a writer for nvim-notify
 -- @function NvimNotify
