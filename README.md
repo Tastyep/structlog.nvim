@@ -37,6 +37,40 @@ Using [luarocks](https://luarocks.org/)
 luarocks install --local structlog.nvim
 ```
 
+### Design
+
+As explained in the introduction, log messages go through a pipeline of functions to provide common information and to structure them into a comprehensible format.
+Internally, the log message is a dictionary built by the logger and is composed as follow:
+
+``` lua
+  local kwargs = {
+    level = Level.name(level), -- The log level represented as a string
+    msg = msg,                 -- The given message
+    events = events or {},     -- The dictionary containing the 'key=value' arguments
+  }
+```
+
+At the end of the processing pipeline, the message `msg` field should contain the text to write to the sinks.
+
+#### Processors
+
+Processors are functions with the goal of enriching log messages. These functions accept one parameter, `kwargs` which they edit by adding new `key=value` pairs, such as the logger's name or the current timestamp, and return it on completion.
+
+See the [processors documentation](https://tastyep.github.io/structlog.nvim/modules/structlog.processors.html#M).
+
+#### Formatters
+
+Formatters define the structure of the log. By default `vim.inspect` is used to format the given arguments `events` as `key=value` pairs.
+All formatters have the same interface. They expose a formatting function accepting a dictionary `kwargs` and return that same dictionary, modified so that `kwargs.msg` contains the log to write to the sink.
+
+See the [formatters documentation](https://tastyep.github.io/structlog.nvim/modules/structlog.formatters.html).
+
+#### Sinks
+
+Sinks specify where to write the log message. Like the other elements of the pipeline, sinks accept `kwargs` as parameter.
+
+See the [sunks documentation](https://tastyep.github.io/structlog.nvim/modules/structlog.sinks.html).
+
 ### Usage
 #### Create and Use
 
