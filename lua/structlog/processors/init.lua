@@ -11,11 +11,9 @@
 -- @table M
 -- @field Timestamper Add a 'timestamp' entry.
 -- @field StackWriter Add entry in ['file', 'line'].
--- @field Namer Add a 'logger_name' entry.
 local M = {
   Timestamper = require("structlog.processors.timestamper"),
   StackWriter = require("structlog.processors.stack_writer"),
-  Namer = require("structlog.processors.namer"),
 }
 
 return M
