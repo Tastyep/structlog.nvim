@@ -10,9 +10,9 @@
 --
 --  https://www.lua.org/pil/22.1.html
 local function Timestamper(format)
-  return function(_, kwargs)
-    kwargs["timestamp"] = os.date(format)
-    return kwargs
+  return function(log)
+    log["timestamp"] = os.date(format)
+    return log
   end
 end
 

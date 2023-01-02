@@ -41,18 +41,18 @@ local function StackWriter(keys, opts)
     end,
   }
 
-  return function(_, kwargs)
+  return function(log)
     local info = debugger()
 
     for _, key in ipairs(keys) do
       if info then
-        kwargs[key] = handlers[key](info)
+        log[key] = handlers[key](info)
       else
-        kwargs[key] = ""
+        log[key] = ""
       end
     end
 
-    return kwargs
+    return log
   end
 end
 

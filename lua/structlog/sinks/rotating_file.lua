@@ -7,11 +7,8 @@ local File = require("structlog.sinks.file")
 
 --- Create a new rotating file writer.
 -- @function RotatingFile
--- @param level The logging level of the sink
 -- @param path The path to the logging file
 -- @param opts Optional parameters
--- @param opts.processors The list of processors to chain the log entries in
--- @param opts.formatter The formatter to format the log entries
 -- @param opts.max_size Maximum size of the file in bytes
 -- @param opts.max_age Maximum age of the file is seconds
 -- @param opts.time_format The time format used for renaming the log, default: "%F-%H:%M:%S"
@@ -21,19 +18,18 @@ setmetatable(RotatingFile, {
   end,
 })
 
-function RotatingFile:new(level, path, opts)
+function RotatingFile:new(path, opts)
   opts = opts or {}
 
-  local file = {}
+  local file = {
+    path = path,
+    max_size = opts.max_size,
+    max_age = opts.max_age,
+    time_format = opts.time_format or "%F-%H:%M:%S",
 
-  file.level = level
-  file.sink = File(level, path, opts)
-  file.path = path
-  file.max_size = opts.max_size
-  file.max_age = opts.max_age
-  file.time_format = opts.time_format or "%F-%H:%M:%S"
-
-  file.uv = opts.uv or vim.loop
+    uv = opts.uv or vim.loop,
+  }
+  file.sink = File(path, opts.iolib)
 
   RotatingFile.__index = RotatingFile
   setmetatable(file, RotatingFile)
