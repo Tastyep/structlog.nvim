@@ -16,7 +16,7 @@ describe("File", function()
   }
 
   local file_path = "path"
-  local file = File(log.level.TRACE, file_path, { iolib = iolib })
+  local file = File(file_path, iolib)
   it("should use the io lib to write to file", function()
     local msg = "test"
     local level = log.level.INFO

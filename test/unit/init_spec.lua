@@ -15,11 +15,17 @@ describe("get_logger", function()
     local logger = log.get_logger("test")
     assert.is.Nil(logger)
   end)
+
   it("should allow getting a configured logger", function()
     local config = {
       test = {
-        sinks = {
-          log.sinks.Console(log.level.INFO),
+        pipelines = {
+          {
+            log.level.INFO,
+            {},
+            log.formatters.KeyValue,
+            log.sinks.Console(),
+          },
         },
       },
     }
@@ -27,6 +33,10 @@ describe("get_logger", function()
 
     local logger = log.get_logger("test")
     assert.is_not.Nil(logger)
-    assert.are.same(config.test.sinks, logger.sinks)
+    assert.are.equals(#config.test.pipelines, #logger.pipelines)
+    assert.are.equals(config.test.pipelines[1][1], logger.pipelines[1].level)
+    assert.are.equals(config.test.pipelines[1][2], logger.pipelines[1].processors)
+    assert.are.equals(config.test.pipelines[1][3], logger.pipelines[1].formatter)
+    assert.are.equals(config.test.pipelines[1][4], logger.pipelines[1].sink)
   end)
 end)

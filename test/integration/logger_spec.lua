@@ -5,19 +5,21 @@ local match = require("luassert.match")
 
 describe("Log message", function()
   it("should be formatted with the added entries", function()
-    local sink = log.sinks.Console(log.level.TRACE, {
-      processors = { log.processors.Namer() },
-      formatter = log.formatters.Format( --
-        "[%s] %s: %s",
-        { "level", "logger_name", "msg" }
-      ),
-    })
+    local sink = log.sinks.Console()
     stub(sink, "write")
 
     local logger = log.Logger("test", {
-      sink,
+      log.Pipeline:new(
+        log.level.TRACE,
+        {},
+        log.formatters.Format( --
+          "[%s] %s: %s",
+          { "level", "logger_name", "msg" }
+        ),
+        sink
+      ),
     })
-    logger.context = { context = "test" }
+    logger.context = { context = "test", logger_name = "test" }
 
     logger:info("message", { key = "value" })
 

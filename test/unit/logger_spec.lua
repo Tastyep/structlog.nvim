@@ -4,31 +4,34 @@ local stub = require("luassert.stub")
 local match = require("luassert.match")
 
 describe("logger", function()
-  local trace_sink = {
-    level = log.level.TRACE,
-    processors = {},
-    formatter = function(kwargs)
-      return kwargs
-    end,
-  }
-  stub(trace_sink, "write")
+  local logger
+  local trace_pipeline
+  local err_pipeline
 
-  local err_sink = {
-    level = log.level.ERROR,
-    processors = {},
-    formatter = function(kwargs)
-      return kwargs
-    end,
-  }
-  stub(err_sink, "write")
+  function new_logger()
+    trace_pipeline = {
+      level = log.level.TRACE,
+      processors = {},
+      formatter = function(kwargs)
+        return kwargs
+      end,
+    }
+    stub(trace_pipeline, "push")
 
-  local logger = log.Logger("test", { err_sink, trace_sink })
+    err_pipeline = {
+      level = log.level.ERROR,
+      processors = {},
+      formatter = function(kwargs)
+        return kwargs
+      end,
+    }
+    stub(err_pipeline, "push")
+
+    return log.Logger("test", { err_pipeline, trace_pipeline })
+  end
 
   before_each(function()
-    for _, sink in ipairs(logger.sinks) do
-      sink.write:clear()
-    end
-    logger.context = {}
+    logger = new_logger()
   end)
 
   describe("clone method", function()
@@ -42,14 +45,14 @@ describe("logger", function()
   describe("log method", function()
     it("should log if the log level of the sink allows it", function()
       logger:log(log.level.INFO, "test")
-      assert.stub(trace_sink.write).called()
-      assert.stub(err_sink.write).not_called()
+      assert.stub(trace_pipeline.push).called()
+      assert.stub(err_pipeline.push).not_called()
     end)
     it("should attach the logger's context into each log", function()
       logger.context = { key = "value" }
       logger:log(log.level.INFO, "test")
-      assert.stub(trace_sink.write).was_called_with(
-        match.is_ref(trace_sink),
+      assert.stub(trace_pipeline.push).was_called_with(
+        match.is_ref(trace_pipeline),
         { msg = "test", level = log.level.name(log.level.INFO), key = "value", events = {} }
       )
     end)
@@ -69,8 +72,8 @@ describe("logger", function()
         local level_name = log.level.name(level)
 
         logger[method](logger, msg, events)
-        assert.stub(trace_sink.write).was_called_with(
-          match.is_ref(trace_sink),
+        assert.stub(trace_pipeline.push).was_called_with(
+          match.is_ref(trace_pipeline),
           { msg = msg, level = level_name, events = events }
         )
       end)
