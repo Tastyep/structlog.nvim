@@ -15,6 +15,7 @@
 local M = {
   Format = require("structlog.formatters.format"),
   FormatColorizer = require("structlog.formatters.format_colorizer"),
+  KeyValue = require("structlog.formatters.key_value"),
 }
 
 return M
