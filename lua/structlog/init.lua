@@ -31,7 +31,11 @@ function M.configure(logger_configs)
     local pipelines = {}
 
     for i, pipeline in ipairs(config.pipelines) do
-      pipelines[i] = Pipeline:new(unpack(pipeline))
+      if pipeline["level"] ~= nil then
+        pipelines[i] = Pipeline:new(pipeline.level, pipeline.processors, pipeline.formatter, pipeline.sink)
+      else
+        pipelines[i] = Pipeline:new(unpack(pipeline))
+      end
     end
     loggers[name] = M.Logger(name, pipelines)
   end
