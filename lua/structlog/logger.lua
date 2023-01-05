@@ -36,6 +36,10 @@ function Logger:clone()
   return logger
 end
 
+function Logger:add_pipeline(pipeline)
+  table.insert(self.pipelines, pipeline)
+end
+
 local function log(logger, level, msg, events)
   local log_entry = {
     level = Level.name(level),

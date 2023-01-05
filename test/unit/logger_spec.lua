@@ -42,6 +42,18 @@ describe("logger", function()
     end)
   end)
 
+  describe("add pipeline method", function()
+    it("should insert a new pipeline into the logger", function()
+      test_pipeline = log.Pipeline:new(log.level.INFO, {}, function(kwargs)
+        return kwargs
+      end)
+      logger:add_pipeline(test_pipeline)
+
+      assert.are.equal(3, #logger.pipelines)
+      assert.are.equals(test_pipeline, logger.pipelines[#logger.pipelines])
+    end)
+  end)
+
   describe("log method", function()
     it("should log if the log level of the sink allows it", function()
       logger:log(log.level.INFO, "test")
