@@ -21,7 +21,7 @@ function Logger:new(name, pipelines)
 
   logger.name = name
   logger.pipelines = pipelines
-  logger.context = {}
+  logger.context = { logger_name = name }
 
   Logger.__index = Logger
   setmetatable(logger, Logger)
@@ -38,6 +38,11 @@ end
 
 function Logger:add_pipeline(pipeline)
   table.insert(self.pipelines, pipeline)
+end
+
+function Logger:set_name(name)
+  self.name = name
+  self.context.logger_name = name
 end
 
 local function log(logger, level, msg, events)
