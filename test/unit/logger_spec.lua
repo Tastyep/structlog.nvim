@@ -54,6 +54,15 @@ describe("logger", function()
     end)
   end)
 
+  describe("set name method", function()
+    it("should rename the logger and update the context", function()
+      local new_name = "test_2"
+      logger:set_name(new_name)
+      assert.are.equal(new_name, logger.name)
+      assert.are.equal(new_name, logger.context.logger_name)
+    end)
+  end)
+
   describe("log method", function()
     it("should log if the log level of the sink allows it", function()
       logger:log(log.level.INFO, "test")
@@ -83,11 +92,15 @@ describe("logger", function()
         local events = { args = "test" }
         local level_name = log.level.name(level)
 
+        local expected_log = {
+          msg = msg,
+          level = level_name,
+          logger_name = logger.name,
+          events = events,
+        }
+
         logger[method](logger, msg, events)
-        assert.stub(trace_pipeline.push).was_called_with(
-          match.is_ref(trace_pipeline),
-          { msg = msg, level = level_name, events = events }
-        )
+        assert.stub(trace_pipeline.push).was_called_with(match.is_ref(trace_pipeline), expected_log)
       end)
     end)
   end
