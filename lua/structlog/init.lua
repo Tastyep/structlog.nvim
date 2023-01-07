@@ -22,7 +22,7 @@ local M = {
 local loggers = {}
 
 --- Configure loggers to be retrieved later using get_logger(...)
--- @usage configure({ logger_name = { pipelines = { { log.level.INFO, {}, log.formatters.KeyValue, log.sinks.ConsoleSink(...), ... }}}})
+-- @usage configure({ logger_name = { pipelines = { { level, processors, formatter, sink }, { ... } }}})
 -- @param logger_configs The loggers' configurations
 function M.configure(logger_configs)
   local Pipeline = require("structlog.pipeline")
