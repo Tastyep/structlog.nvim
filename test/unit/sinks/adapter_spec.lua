@@ -2,7 +2,6 @@ local log = require("structlog")
 local SinkAdapter = log.sinks.Adapter
 
 local stub = require("luassert.stub")
-local match = require("luassert.match")
 
 describe("SinkAdapter", function()
   local handler = {}

@@ -8,7 +8,7 @@ describe("logger", function()
   local trace_pipeline
   local err_pipeline
 
-  function new_logger()
+  local function new_logger()
     trace_pipeline = {
       level = log.level.TRACE,
       processors = {},
@@ -44,9 +44,11 @@ describe("logger", function()
 
   describe("add pipeline method", function()
     it("should insert a new pipeline into the logger", function()
-      test_pipeline = log.Pipeline:new(log.level.INFO, {}, function(kwargs)
-        return kwargs
-      end)
+      local formatter = function(log_entry)
+        return log_entry
+      end
+      local sink = function(_) end
+      local test_pipeline = log.Pipeline:new(log.level.INFO, {}, formatter, log.sinks.Adapter:new(sink))
       logger:add_pipeline(test_pipeline)
 
       assert.are.equal(3, #logger.pipelines)
