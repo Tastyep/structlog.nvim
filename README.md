@@ -10,7 +10,9 @@
 
 Structured Logging for nvim, using Lua
 
-### Why using it
+![demo](https://user-images.githubusercontent.com/3267228/211154903-e8088c1d-e902-4f63-8e7c-cda537f16dae.png)
+
+## Why using it
 
 `structlog` makes logging in Lua less painful and more powerful by adding structure to your log entries.
 
@@ -21,9 +23,12 @@ Thanks to its flexible design, the structure of the final log output is up for y
 Each log entry goes through a processor pipeline that is just a chain of functions that receive a dictionary and return a new dictionary that gets fed into the next function. That allows for simple but powerful data manipulation.\
 This dictionary is then formatted and sent out to the sink.
 
+![structlog-banner drawio](https://user-images.githubusercontent.com/3267228/211154943-63bec130-7db9-4472-9b08-1174853e51ab.png)
+
+
 For more details, consider reading the [documentation](https://tastyep.github.io/structlog.nvim/index.html).
 
-### Installation
+## Installation
 
 Using [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
@@ -37,166 +42,129 @@ Using [luarocks](https://luarocks.org/)
 luarocks install --local structlog.nvim
 ```
 
-### Design
+## Design
 
-As explained in the introduction, log messages go through a pipeline of functions to provide common information and to structure them into a comprehensible format.
+As explained in the introduction, log messages go through a pipeline to provide common information and to structure them into a comprehensible format.
 Internally, the log message is a dictionary built by the logger and is composed as follow:
 
 ``` lua
-  local kwargs = {
+  local log = {
     level = Level.name(level), -- The log level represented as a string
     msg = msg,                 -- The given message
+    logger_name = logger.name, -- The name of the logger
     events = events or {},     -- The dictionary containing the 'key=value' arguments
   }
 ```
 
-At the end of the processing pipeline, the message `msg` field should contain the text to write to the sinks.
+At the end of a pipeline, the message `msg` field should contain the text to write to the sink.
 
-#### Processors
+### Processors
 
-Processors are functions with the goal of enriching log messages. These functions accept one parameter, `kwargs` which they edit by adding new `key=value` pairs, such as the logger's name or the current timestamp, and return it on completion.
+Processors are functions with the goal of enriching log messages. These functions accept one parameter, `log` which they edit by adding new `key=value` pairs, such as the logger's name or the current timestamp, and return it on completion.
 
 See the [processors documentation](https://tastyep.github.io/structlog.nvim/modules/structlog.processors.html#M).
 
-#### Formatters
+### Formatters
 
 Formatters define the structure of the log. By default `vim.inspect` is used to format the given arguments `events` as `key=value` pairs.
-All formatters have the same interface. They expose a formatting function accepting a dictionary `kwargs` and return that same dictionary, modified so that `kwargs.msg` contains the log to write to the sink.
+All formatters have the same interface. They expose a formatting function accepting a dictionary `log` and return that same dictionary, modified so that `log.msg` contains the message to write to the sink.
 
 See the [formatters documentation](https://tastyep.github.io/structlog.nvim/modules/structlog.formatters.html).
 
-#### Sinks
+### Sinks
 
-Sinks specify where to write the log message. Like the other elements of the pipeline, sinks accept `kwargs` as parameter.
+Sinks specify where to write the log message. Like the other elements of the pipeline, sinks accept `log` as parameter.
 
-See the [sunks documentation](https://tastyep.github.io/structlog.nvim/modules/structlog.sinks.html).
+See the [sinks documentation](https://tastyep.github.io/structlog.nvim/modules/structlog.sinks.html).
 
-### Usage
-#### Create and Use
-
-``` lua
-local log = require("structlog")
-
-local logger = log.Logger("name", {
-  log.sinks.Console(
-    log.level.INFO
-    {
-      processors = {
-        log.processors.Namer(),
-        log.processors.Timestamper("%H:%M:%S"),
-      },
-      formatter = log.formatters.Format( --
-        "%s [%s] %s: %-30s",
-        { "timestamp", "level", "logger_name", "msg" }
-      ),
-    }
-  ),
-})
-
-logger:info("A log message")
-logger:warn("A log message with keyword arguments", { warning = "something happened" })
-```
-
-``` bash
-10:32:40 [INFO] name: A log message
-10:32:40 [WARN] name: A log message with keyword arguments     warning="something happened"
-```
-
-#### Configure and Retrieve
+## Usage
+### Minimal
 
 ``` lua
 local log = require("structlog")
 
 log.configure({
-  name = {
-    sinks = {
-      log.sinks.Console(
+  my_logger = {
+    pipelines = {
+      {
         log.level.INFO,
         {
-          processors = {
-            log.processors.Namer(),
-            log.processors.Timestamper("%H:%M:%S"),
-          },
-          formatter = log.formatters.Format( --
-            "%s [%s] %s: %-30s",
-            { "timestamp", "level", "logger_name", "msg" },
-          ),
-        }
-      ),
+          log.processors.Timestamper("%H:%M:%S"),
+        },
+        log.formatters.Format( --
+          "%s [%s] %s: %-30s",
+          { "timestamp", "level", "logger_name", "msg" },
+        ),
+        log.sinks.Console(),
+      },
     },
   },
-  other_logger = {...},
+  other_logger = {
+    pipelines = { ... }
+  },
 })
 
-local logger = log.get_logger("name")
+local logger = log.get_logger("my_logger")
 ```
 
-### Example
+### Complete
 
 ``` lua
 local log = require("structlog")
 
 log.configure({
-  name = {
-    sinks = {
-      log.sinks.Console(
-        log.level.INFO,
-        {
-          processors = {
-            log.processors.Namer(),
-            log.processors.StackWriter({ "line", "file" }, { max_parents = 0, stack_level = 0 }),
-            log.processors.Timestamper("%H:%M:%S"),
-          },
-          formatter = log.formatters.FormatColorizer( --
-            "%s [%s] %s: %-30s",
-            { "timestamp", "level", "logger_name", "msg" },
-            { level = log.formatters.FormatColorizer.color_level() }
-          ),
-        }
-      ),
-      log.sinks.NvimNotify(
-        log.level.WARN,
-        {
-          processors = {
-            log.processors.Namer(),
-          },
-          formatter = log.formatters.Format( --
-            "%s",
-            { "msg" },
-            { blacklist = { "level", "logger_name" } }
-          ),
-          params_map = { title = "logger_name" },
-        }),
-      log.sinks.File(
-        log.level.TRACE,
-        "./test.log",
-        {
-          processors = {
-            log.processors.Namer(),
-            log.processors.StackWriter({ "line", "file" }, { max_parents = 3 }),
-            log.processors.Timestamper("%H:%M:%S"),
-          },
-          formatter = log.formatters.Format( --
-            "%s [%s] %s: %-30s",
-            { "timestamp", "level", "logger_name", "msg" }
-          ),
-        }
-      ),
+  my_logger = {
+    pipelines = {
+      {
+        level = log.level.INFO,
+        processors = {
+          log.processors.StackWriter({ "line", "file" }, { max_parents = 0, stack_level = 0 }),
+          log.processors.Timestamper("%H:%M:%S"),
+        },
+        formatter = log.formatters.FormatColorizer( --
+          "%s [%s] %s: %-30s",
+          { "timestamp", "level", "logger_name", "msg" },
+          { level = log.formatters.FormatColorizer.color_level() }
+        ),
+        sink = log.sinks.Console(),
+      },
+      {
+        level = log.level.WARN,
+        processors = {},
+        formatter = log.formatters.Format( --
+          "%s",
+          { "msg" },
+          { blacklist = { "level", "logger_name" } }
+        ),
+        sink =  log.sinks.NvimNotify(),
+      },
+      {
+        level = log.level.TRACE,
+        processors = {
+          log.processors.StackWriter({ "line", "file" }, { max_parents = 3 }),
+          log.processors.Timestamper("%H:%M:%S"),
+        },
+        formatter = log.formatters.Format( --
+          "%s [%s] %s: %-30s",
+          { "timestamp", "level", "logger_name", "msg" }
+        ),
+        sink = log.sinks.File("./test.log"),
+      },
     },
+  },
   },
   -- other_logger = {...}
 })
 
-local logger = log.get_logger("name")
+local logger = log.get_logger("my_logger")
 logger:info("A log message")
 logger:warn("A log message with keyword arguments", { warning = "something happened" })
 ```
 
-![image](https://user-images.githubusercontent.com/3267228/130428431-94a65c67-553c-4daa-843a-5316b092321b.png)
-![image](https://user-images.githubusercontent.com/3267228/137624268-8de03336-ee38-44d8-b491-4bc7f3111f87.png)
-
 ``` bash
 cat test.log:
-10:43:23 [INFO] name: A log message                            file="lua/lsp/null-ls/formatters.lua", line=9
-10:43:23 [WARN] name: A log message with keyword arguments     file="lua/lsp/null-ls/formatters.lua", line=10, warning="something happened"
+10:43:23 [INFO] my_logger: A log message                            file="lua/foo/bar.lua", line=9
+10:43:23 [WARN] my_logger: A log message with keyword arguments     file="lua/foo/bar.lua", line=10, warning="something happened"
 ```
+
+![notify](https://user-images.githubusercontent.com/3267228/211155369-69678288-8b9c-49e9-9fc0-5fa40059f594.png)
