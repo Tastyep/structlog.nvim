@@ -32,7 +32,7 @@ local function StackWriter(keys, opts)
 
       local source = info.source:sub(2)
       if opts.max_parents then
-        local parents = vim.split(source, "/")
+        local parents = vim.split(source, "/", {})
 
         source = table.concat(parents, "/", math.max(#parents - opts.max_parents, 1))
       end
