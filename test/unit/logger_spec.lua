@@ -12,8 +12,8 @@ describe("logger", function()
     trace_pipeline = {
       level = log.level.TRACE,
       processors = {},
-      formatter = function(kwargs)
-        return kwargs
+      formatter = function(log_entry)
+        return log_entry
       end,
     }
     stub(trace_pipeline, "push")
@@ -21,8 +21,8 @@ describe("logger", function()
     err_pipeline = {
       level = log.level.ERROR,
       processors = {},
-      formatter = function(kwargs)
-        return kwargs
+      formatter = function(log_entry)
+        return log_entry
       end,
     }
     stub(err_pipeline, "push")

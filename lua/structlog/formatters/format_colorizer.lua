@@ -22,7 +22,7 @@ function FormatColorizer:new(format, entries, colors, opts)
   opts.blacklist = opts.blacklist or {}
   opts.blacklist_all = opts.blacklist_all == true
 
-  return function(kwargs)
+  return function(log)
     local format_cpy = format
 
     local output = {}
@@ -40,19 +40,19 @@ function FormatColorizer:new(format, entries, colors, opts)
       end
       format_cpy = format_cpy:sub(idx + match:len())
 
-      local color = colors[entry] and colors[entry](kwargs[entry]) or nil
-      table.insert(output, { match:format(kwargs[entry]), color })
+      local color = colors[entry] and colors[entry](log[entry]) or nil
+      table.insert(output, { match:format(log[entry]), color })
       consumed_events[entry] = true
     end
-    kwargs.msg = output
+    log.msg = output
 
     if opts.blacklist_all then
-      return kwargs
+      return log
     end
 
     -- Push remaining entries into events and format as key=value
-    local events = vim.deepcopy(kwargs.events)
-    for k, v in pairs(kwargs) do
+    local events = vim.deepcopy(log.events)
+    for k, v in pairs(log) do
       if not consumed_events[k] then
         events[k] = v
       end
@@ -61,10 +61,10 @@ function FormatColorizer:new(format, entries, colors, opts)
       events = vim.inspect(events, { newline = "", indent = " " }):sub(2, -2)
       -- TODO: Implement our own inspect to avoid modifying user message
       local color = colors.events and colors.events(events) or nil
-      table.insert(kwargs.msg, { events:gsub(" = ", "="), color })
+      table.insert(log.msg, { events:gsub(" = ", "="), color })
     end
 
-    return kwargs
+    return log
   end
 end
 
