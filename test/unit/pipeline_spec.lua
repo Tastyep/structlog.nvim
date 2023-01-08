@@ -15,7 +15,7 @@ describe("pipeline", function()
     local sink = {}
     stub(sink, "write")
 
-    local pipeline = log.Pipeline:new(log.level.INFO, {}, formatter, sink)
+    local pipeline = log.Pipeline(log.level.INFO, {}, formatter, sink)
     local log_entry = make_test_log()
     pipeline:push(log_entry)
     assert.stub(sink.write).was_called_with(match.is_ref(sink), log_entry)

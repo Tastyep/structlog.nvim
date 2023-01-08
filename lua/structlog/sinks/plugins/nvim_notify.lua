@@ -25,7 +25,7 @@ local function NvimNotifySink(nvim_notify, opts_overrides)
     nvim_notify(log.msg, log.level, opts)
   end
 
-  return SinkAdapter:new(notify_writer)
+  return SinkAdapter(notify_writer)
 end
 
 return NvimNotifySink
