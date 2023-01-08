@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>StructLog documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>StructLog</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Why_using_it">Why using it </a></li>
+<li><a href="#Installation">Installation </a></li>
+<li><a href="#Design">Design </a></li>
+<li><a href="#Usage">Usage </a></li>
+</ul>
+
+
+<h2>Topics</h2>
+<ul class="">
+  <li><strong>README</strong></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/structlog.html">structlog</a></li>
+  <li><a href="../modules/structlog.formatters.html">structlog.formatters</a></li>
+  <li><a href="../modules/structlog.formatters.format.html">structlog.formatters.format</a></li>
+  <li><a href="../modules/structlog.formatters.format_colorizer.html">structlog.formatters.format_colorizer</a></li>
+  <li><a href="../modules/structlog.formatters.key_value.html">structlog.formatters.key_value</a></li>
+  <li><a href="../modules/structlog.level.html">structlog.level</a></li>
+  <li><a href="../modules/structlog.logger.html">structlog.logger</a></li>
+  <li><a href="../modules/structlog.pipeline.html">structlog.pipeline</a></li>
+  <li><a href="../modules/structlog.processors.html">structlog.processors</a></li>
+  <li><a href="../modules/structlog.processors.stack_writer.html">structlog.processors.stack_writer</a></li>
+  <li><a href="../modules/structlog.processors.timestamper.html">structlog.processors.timestamper</a></li>
+  <li><a href="../modules/structlog.sinks.html">structlog.sinks</a></li>
+  <li><a href="../modules/structlog.sinks.adapter.html">structlog.sinks.adapter</a></li>
+  <li><a href="../modules/structlog.sinks.console.html">structlog.sinks.console</a></li>
+  <li><a href="../modules/structlog.sinks.file.html">structlog.sinks.file</a></li>
+  <li><a href="../modules/structlog.sinks.plugins.nvim_notify.html">structlog.sinks.plugins.nvim_notify</a></li>
+  <li><a href="../modules/structlog.sinks.rotating_file.html">structlog.sinks.rotating_file</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+
+<h1>structlog.nvim</h1>
+
+<p><a href="https://luarocks.org/modules/Tastyep/structlog.nvim"><img src="https://img.shields.io/static/v1?label=Luarocks&amp;message=structlog.nvim&amp;color=blue&amp;logo=Lua" alt="Luarocks - structlog.nvim"/></a>
+<a href="https://github.com/Tastyep/structlog.nvim/releases/"><img src="https://img.shields.io/github/tag/Tastyep/structlog.nvim?include_prereleases=&amp;sort=semver" alt="GitHub tag"/></a>
+<a href="#license"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License"/></a></p>
+
+<p><a href="https://github.com/Tastyep/structlog.nvim/actions/workflows/test.yaml"><img src="https://github.com/Tastyep/structlog.nvim/actions/workflows/test.yaml/badge.svg" alt="test"/></a>
+<a href="https://github.com/Tastyep/structlog.nvim/actions/workflows/sanitize.yaml"><img src="https://github.com/Tastyep/structlog.nvim/actions/workflows/sanitize.yaml/badge.svg" alt="sanitize"/></a>
+<a href="https://tastyep.github.io/structlog.nvim/"><img src="https://github.com/Tastyep/structlog.nvim/actions/workflows/documentation.yaml/badge.svg" alt="Documentation"/></a></p>
+
+<p>Structured Logging for nvim, using Lua</p>
+
+<p><img src="https://user-images.githubusercontent.com/3267228/211154903-e8088c1d-e902-4f63-8e7c-cda537f16dae.png" alt="demo"/></p>
+
+<p><a name="Why_using_it"></a></p>
+<h2>Why using it</h2>
+
+<p><a href="../modules/structlog.html#">structlog</a> makes logging in Lua less painful and more powerful by adding structure to your log entries.</p>
+
+<p>Instead of writting complex messages, you can start thinking in terms of an event that happens in the context of key/value pairs. \
+Each log entry is a meaningful dictionary instead of an opaque string!</p>
+
+<p>Thanks to its flexible design, the structure of the final log output is up for you to decide. \
+Each log entry goes through a processor pipeline that is just a chain of functions that receive a dictionary and return a new dictionary that gets fed into the next function. That allows for simple but powerful data manipulation.\
+This dictionary is then formatted and sent out to the sink.</p>
+
+<p><img src="https://user-images.githubusercontent.com/3267228/211154943-63bec130-7db9-4472-9b08-1174853e51ab.png" alt="structlog-banner drawio"/></p>
+
+
+<p>For more details, consider reading the <a href="https://tastyep.github.io/structlog.nvim/index.html">documentation</a>.</p>
+
+<p><a name="Installation"></a></p>
+<h2>Installation</h2>
+
+<p>Using <a href="https://github.com/wbthomason/packer.nvim">packer.nvim</a></p>
+
+
+<pre>
+use { <span class="string">"Tastyep/structlog.nvim"</span> }
+</pre>
+
+
+<p>Using <a href="https://luarocks.org/">luarocks</a></p>
+
+
+<pre>
+luarocks install <span class="comment">--local structlog.nvim</span>
+</pre>
+
+
+<p><a name="Design"></a></p>
+<h2>Design</h2>
+
+<p>As explained in the introduction, log messages go through a pipeline to provide common information and to structure them into a comprehensible format.
+Internally, the log message is a dictionary built by the logger and is composed as follow:</p>
+
+
+<pre>
+  <span class="keyword">local</span> log = {
+    level = Level.name(level), <span class="comment">-- The log level represented as a string
+</span>    msg = msg,                 <span class="comment">-- The given message
+</span>    logger_name = logger.name, <span class="comment">-- The name of the logger
+</span>    events = events <span class="keyword">or</span> {},     <span class="comment">-- The dictionary containing the 'key=value' arguments
+</span>  }
+</pre>
+
+
+<p>At the end of a pipeline, the message <code>msg</code> field should contain the text to write to the sink.</p>
+
+<h3>Processors</h3>
+
+<p>Processors are functions with the goal of enriching log messages. These functions accept one parameter, <code>log</code> which they edit by adding new <code>key=value</code> pairs, such as the logger's name or the current timestamp, and return it on completion.</p>
+
+<p>See the <a href="https://tastyep.github.io/structlog.nvim/modules/structlog.processors.html#M">processors documentation</a>.</p>
+
+<h3>Formatters</h3>
+
+<p>Formatters define the structure of the log. By default <code>vim.inspect</code> is used to format the given arguments <code>events</code> as <code>key=value</code> pairs.
+All formatters have the same interface. They expose a formatting function accepting a dictionary <code>log</code> and return that same dictionary, modified so that <code>log.msg</code> contains the message to write to the sink.</p>
+
+<p>See the <a href="https://tastyep.github.io/structlog.nvim/modules/structlog.formatters.html">formatters documentation</a>.</p>
+
+<h3>Sinks</h3>
+
+<p>Sinks specify where to write the log message. Like the other elements of the pipeline, sinks accept <code>log</code> as parameter.</p>
+
+<p>See the <a href="https://tastyep.github.io/structlog.nvim/modules/structlog.sinks.html">sinks documentation</a>.</p>
+
+<p><a name="Usage"></a></p>
+<h2>Usage</h2>
+<h3>Minimal</h3>
+
+
+<pre>
+<span class="keyword">local</span> log = <span class="global">require</span>(<span class="string">"structlog"</span>)
+
+log.configure({
+  my_logger = {
+    pipelines = {
+      {
+        log.level.INFO,
+        {
+          log.processors.Timestamper(<span class="string">"%H:%M:%S"</span>),
+        },
+        log.formatters.Format( <span class="comment">--
+</span>          <span class="string">"%s [%s] %s: %-30s"</span>,
+          { <span class="string">"timestamp"</span>, <span class="string">"level"</span>, <span class="string">"logger_name"</span>, <span class="string">"msg"</span> },
+        ),
+        log.sinks.Console(),
+      },
+    },
+  },
+  other_logger = {
+    pipelines = { ... }
+  },
+})
+
+<span class="keyword">local</span> logger = log.get_logger(<span class="string">"my_logger"</span>)
+</pre>
+
+
+<h3>Complete</h3>
+
+
+<pre>
+<span class="keyword">local</span> log = <span class="global">require</span>(<span class="string">"structlog"</span>)
+
+log.configure({
+  my_logger = {
+    pipelines = {
+      {
+        level = log.level.INFO,
+        processors = {
+          log.processors.StackWriter({ <span class="string">"line"</span>, <span class="string">"file"</span> }, { max_parents = <span class="number">0</span>, stack_level = <span class="number">0</span> }),
+          log.processors.Timestamper(<span class="string">"%H:%M:%S"</span>),
+        },
+        formatter = log.formatters.FormatColorizer( <span class="comment">--
+</span>          <span class="string">"%s [%s] %s: %-30s"</span>,
+          { <span class="string">"timestamp"</span>, <span class="string">"level"</span>, <span class="string">"logger_name"</span>, <span class="string">"msg"</span> },
+          { level = log.formatters.FormatColorizer.color_level() }
+        ),
+        sink = log.sinks.Console(),
+      },
+      {
+        level = log.level.WARN,
+        processors = {},
+        formatter = log.formatters.Format( <span class="comment">--
+</span>          <span class="string">"%s"</span>,
+          { <span class="string">"msg"</span> },
+          { blacklist = { <span class="string">"level"</span>, <span class="string">"logger_name"</span> } }
+        ),
+        sink =  log.sinks.NvimNotify(),
+      },
+      {
+        level = log.level.TRACE,
+        processors = {
+          log.processors.StackWriter({ <span class="string">"line"</span>, <span class="string">"file"</span> }, { max_parents = <span class="number">3</span> }),
+          log.processors.Timestamper(<span class="string">"%H:%M:%S"</span>),
+        },
+        formatter = log.formatters.Format( <span class="comment">--
+</span>          <span class="string">"%s [%s] %s: %-30s"</span>,
+          { <span class="string">"timestamp"</span>, <span class="string">"level"</span>, <span class="string">"logger_name"</span>, <span class="string">"msg"</span> }
+        ),
+        sink = log.sinks.File(<span class="string">"./test.log"</span>),
+      },
+    },
+  },
+  },
+  <span class="comment">-- other_logger = {...}
+</span>})
+
+<span class="keyword">local</span> logger = log.get_logger(<span class="string">"my_logger"</span>)
+logger:info(<span class="string">"A log message"</span>)
+logger:warn(<span class="string">"A log message with keyword arguments"</span>, { warning = <span class="string">"something happened"</span> })
+</pre>
+
+
+
+<pre>
+cat test.log:
+<span class="number">10</span>:<span class="number">43</span>:<span class="number">23</span> [INFO] my_logger: A log message                            file=<span class="string">"lua/foo/bar.lua"</span>, line=<span class="number">9</span>
+<span class="number">10</span>:<span class="number">43</span>:<span class="number">23</span> [WARN] my_logger: A log message with keyword arguments     file=<span class="string">"lua/foo/bar.lua"</span>, line=<span class="number">10</span>, warning=<span class="string">"something happened"</span>
+</pre>
+
+
+<p><img src="https://user-images.githubusercontent.com/3267228/211155369-69678288-8b9c-49e9-9fc0-5fa40059f594.png" alt="notify"/></p>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-01-08 13:36:35 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

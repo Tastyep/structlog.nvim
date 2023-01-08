@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>StructLog documentation</title>
+    <link rel="stylesheet" href="ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>StructLog</h1>
+
+
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="modules/structlog.formatters.format.html">structlog.formatters.format</a></li>
+  <li><a href="modules/structlog.formatters.format_colorizer.html">structlog.formatters.format_colorizer</a></li>
+  <li><a href="modules/structlog.formatters.html">structlog.formatters</a></li>
+  <li><a href="modules/structlog.formatters.key_value.html">structlog.formatters.key_value</a></li>
+  <li><a href="modules/structlog.html">structlog</a></li>
+  <li><a href="modules/structlog.level.html">structlog.level</a></li>
+  <li><a href="modules/structlog.logger.html">structlog.logger</a></li>
+  <li><a href="modules/structlog.pipeline.html">structlog.pipeline</a></li>
+  <li><a href="modules/structlog.processors.html">structlog.processors</a></li>
+  <li><a href="modules/structlog.processors.stack_writer.html">structlog.processors.stack_writer</a></li>
+  <li><a href="modules/structlog.processors.timestamper.html">structlog.processors.timestamper</a></li>
+  <li><a href="modules/structlog.sinks.adapter.html">structlog.sinks.adapter</a></li>
+  <li><a href="modules/structlog.sinks.console.html">structlog.sinks.console</a></li>
+  <li><a href="modules/structlog.sinks.file.html">structlog.sinks.file</a></li>
+  <li><a href="modules/structlog.sinks.html">structlog.sinks</a></li>
+  <li><a href="modules/structlog.sinks.plugins.nvim_notify.html">structlog.sinks.plugins.nvim_notify</a></li>
+  <li><a href="modules/structlog.sinks.rotating_file.html">structlog.sinks.rotating_file</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="topics/README.md.html">README</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+
+  <h2>Structured Logging for nvim, using Lua</h2>
+
+<h2>Modules</h2>
+<table class="module_list">
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.formatters.format.html">structlog.formatters.format</a></td>
+		<td class="summary">Format entries using a string format.</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.formatters.format_colorizer.html">structlog.formatters.format_colorizer</a></td>
+		<td class="summary">Format and Colorize log entries.</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.formatters.html">structlog.formatters</a></td>
+		<td class="summary">Entry point for loading formatters.</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.formatters.key_value.html">structlog.formatters.key_value</a></td>
+		<td class="summary">Format log entries as key=value.</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.html">structlog</a></td>
+		<td class="summary">Entry point for loading structlog modules.</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.level.html">structlog.level</a></td>
+		<td class="summary">Log levels definitions.</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.logger.html">structlog.logger</a></td>
+		<td class="summary">The logger package.</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.pipeline.html">structlog.pipeline</a></td>
+		<td class="summary">Route user logs through a chain of transformations</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.processors.html">structlog.processors</a></td>
+		<td class="summary">Entry point for loading processors.</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.processors.stack_writer.html">structlog.processors.stack_writer</a></td>
+		<td class="summary">Read the stack trace and provide additional log entries.</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.processors.timestamper.html">structlog.processors.timestamper</a></td>
+		<td class="summary">Add a formatted 'timestamp' entry to the log entries.</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.sinks.adapter.html">structlog.sinks.adapter</a></td>
+		<td class="summary">Convenience class for writing a log entry to a custom sink</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.sinks.console.html">structlog.sinks.console</a></td>
+		<td class="summary">Write log entries to nvim's console.</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.sinks.file.html">structlog.sinks.file</a></td>
+		<td class="summary">Write log entries to a file.</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.sinks.html">structlog.sinks</a></td>
+		<td class="summary">Entry point for loading sinks.</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.sinks.plugins.nvim_notify.html">structlog.sinks.plugins.nvim_notify</a></td>
+		<td class="summary">nvim-notify sink adapter</td>
+	</tr>
+	<tr>
+		<td class="name"  nowrap><a href="modules/structlog.sinks.rotating_file.html">structlog.sinks.rotating_file</a></td>
+		<td class="summary">Write log entries to a rotating file.</td>
+	</tr>
+</table>
+<h2>Topics</h2>
+<table class="module_list">
+	<tr>
+		<td class="name"  nowrap><a href="topics/README.md.html">README.md</a></td>
+		<td class="summary"></td>
+	</tr>
+</table>
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-01-08 13:36:35 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>StructLog documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>StructLog</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Class_Logger">Class Logger </a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/structlog.html">structlog</a></li>
+  <li><a href="../modules/structlog.formatters.html">structlog.formatters</a></li>
+  <li><a href="../modules/structlog.formatters.format.html">structlog.formatters.format</a></li>
+  <li><a href="../modules/structlog.formatters.format_colorizer.html">structlog.formatters.format_colorizer</a></li>
+  <li><a href="../modules/structlog.formatters.key_value.html">structlog.formatters.key_value</a></li>
+  <li><a href="../modules/structlog.level.html">structlog.level</a></li>
+  <li><strong>structlog.logger</strong></li>
+  <li><a href="../modules/structlog.pipeline.html">structlog.pipeline</a></li>
+  <li><a href="../modules/structlog.processors.html">structlog.processors</a></li>
+  <li><a href="../modules/structlog.processors.stack_writer.html">structlog.processors.stack_writer</a></li>
+  <li><a href="../modules/structlog.processors.timestamper.html">structlog.processors.timestamper</a></li>
+  <li><a href="../modules/structlog.sinks.html">structlog.sinks</a></li>
+  <li><a href="../modules/structlog.sinks.adapter.html">structlog.sinks.adapter</a></li>
+  <li><a href="../modules/structlog.sinks.console.html">structlog.sinks.console</a></li>
+  <li><a href="../modules/structlog.sinks.file.html">structlog.sinks.file</a></li>
+  <li><a href="../modules/structlog.sinks.plugins.nvim_notify.html">structlog.sinks.plugins.nvim_notify</a></li>
+  <li><a href="../modules/structlog.sinks.rotating_file.html">structlog.sinks.rotating_file</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>structlog.logger</code></h1>
+<p>The logger package.</p>
+<p>
+
+</p>
+
+
+<h2><a href="#Class_Logger">Class Logger </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Logger:Logger">Logger:Logger (name, pipelines)</a></td>
+	<td class="summary">Create a new logger.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Logger:add_pipeline">Logger:add_pipeline (pipeline)</a></td>
+	<td class="summary">Add a new pipeline to the logger.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Logger:clone">Logger:clone ()</a></td>
+	<td class="summary">Create a copy of the current logger.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Logger:debug">Logger:debug (msg, events)</a></td>
+	<td class="summary">Log a message and its events in debug severity.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Logger:error">Logger:error (msg, events)</a></td>
+	<td class="summary">Log a message and its events in error severity.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Logger:info">Logger:info (msg, events)</a></td>
+	<td class="summary">Log a message and its events in info severity.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Logger:log">Logger:log (level, msg, events)</a></td>
+	<td class="summary">Log a message and its events with a custom log level.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Logger:set_name">Logger:set_name (name)</a></td>
+	<td class="summary">Set the logger name and update it's context (logger_name).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Logger:trace">Logger:trace (msg, events)</a></td>
+	<td class="summary">Log a message and its events in trace severity.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Logger:warn">Logger:warn (msg, events)</a></td>
+	<td class="summary">Log a message and its events in warning severity.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header has-description"><a name="Class_Logger"></a>Class Logger </h2>
+
+          <div class="section-description">
+          The logger class.
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "Logger:Logger"></a>
+    <strong>Logger:Logger (name, pipelines)</strong>
+    </dt>
+    <dd>
+    Create a new logger.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         The name of the logger.
+        </li>
+        <li><span class="parameter">pipelines</span>
+         The list of pipeline to write the log entries to.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A new logger instance.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Logger:add_pipeline"></a>
+    <strong>Logger:add_pipeline (pipeline)</strong>
+    </dt>
+    <dd>
+    Add a new pipeline to the logger.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">pipeline</span>
+         The pipeline to add.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Logger:clone"></a>
+    <strong>Logger:clone ()</strong>
+    </dt>
+    <dd>
+    Create a copy of the current logger.
+ The context of the cloned logger is deepcopied from the original one.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A clone of the logger.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Logger:debug"></a>
+    <strong>Logger:debug (msg, events)</strong>
+    </dt>
+    <dd>
+    Log a message and its events in debug severity.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">msg</span>
+
+
+
+        </li>
+        <li><span class="parameter">events</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/structlog.logger.html#Logger:log">log</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Logger:error"></a>
+    <strong>Logger:error (msg, events)</strong>
+    </dt>
+    <dd>
+    Log a message and its events in error severity.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">msg</span>
+
+
+
+        </li>
+        <li><span class="parameter">events</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/structlog.logger.html#Logger:log">log</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Logger:info"></a>
+    <strong>Logger:info (msg, events)</strong>
+    </dt>
+    <dd>
+    Log a message and its events in info severity.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">msg</span>
+
+
+
+        </li>
+        <li><span class="parameter">events</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/structlog.logger.html#Logger:log">log</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Logger:log"></a>
+    <strong>Logger:log (level, msg, events)</strong>
+    </dt>
+    <dd>
+    Log a message and its events with a custom log level.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">level</span>
+         The severity of the log.
+        </li>
+        <li><span class="parameter">msg</span>
+         The logging message.
+        </li>
+        <li><span class="parameter">events</span>
+         The list of key=value event pairs.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Logger:set_name"></a>
+    <strong>Logger:set_name (name)</strong>
+    </dt>
+    <dd>
+    Set the logger name and update it's context (logger_name).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         The name of the logger.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Logger:trace"></a>
+    <strong>Logger:trace (msg, events)</strong>
+    </dt>
+    <dd>
+    Log a message and its events in trace severity.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">msg</span>
+
+
+
+        </li>
+        <li><span class="parameter">events</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/structlog.logger.html#Logger:log">log</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Logger:warn"></a>
+    <strong>Logger:warn (msg, events)</strong>
+    </dt>
+    <dd>
+    Log a message and its events in warning severity.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">msg</span>
+
+
+
+        </li>
+        <li><span class="parameter">events</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/structlog.logger.html#Logger:log">log</a>
+    </ul>
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-01-08 13:36:35 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
