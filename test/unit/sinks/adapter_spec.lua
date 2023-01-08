@@ -10,7 +10,7 @@ describe("SinkAdapter", function()
   it("should adapt the logs entries and call the handle", function()
     local msg = "test"
     local level_name = log.level.name(log.level.INFO)
-    local sink = SinkAdapter:new(handler.handle)
+    local sink = SinkAdapter(handler.handle)
     local log_entry = { msg = msg, level = level_name }
     sink:write(log_entry)
 

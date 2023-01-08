@@ -12,18 +12,18 @@ local Pipeline = {}
 -- @param sink The sink to write the structured log to.
 -- @return A new pipeline instance.
 setmetatable(Pipeline, {
-  __class = function(cls, ...)
+  __call = function(cls, ...)
     return cls:new(...)
   end,
 })
 
 function Pipeline:new(level, processors, formatter, sink)
-  local pipeline = {}
-
-  pipeline.level = level
-  pipeline.processors = processors or {}
-  pipeline.formatter = formatter
-  pipeline.sink = sink
+  local pipeline = {
+    level = level,
+    processors = processors or {},
+    formatter = formatter,
+    sink = sink,
+  }
 
   Pipeline.__index = Pipeline
   setmetatable(pipeline, Pipeline)

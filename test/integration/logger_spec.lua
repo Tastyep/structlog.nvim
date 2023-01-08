@@ -9,7 +9,7 @@ describe("Log message", function()
     stub(sink, "write")
 
     local logger = log.Logger("test", {
-      log.Pipeline:new(
+      log.Pipeline(
         log.level.TRACE,
         {},
         log.formatters.Format( --
