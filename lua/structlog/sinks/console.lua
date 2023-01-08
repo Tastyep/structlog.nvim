@@ -16,7 +16,7 @@ setmetatable(Console, {
 
 function Console:new(async)
   local console = {
-    async = async or true,
+    async = async,
   }
 
   Console.__index = Console
