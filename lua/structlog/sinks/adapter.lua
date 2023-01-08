@@ -6,8 +6,8 @@ local SinkAdapter = {}
 
 --- Create an adapter for a custom sink
 -- @function SinkAdapter
--- @param handle A callable  custom sink implementation
--- @param param_converter a callable function that converts the log entry into an unpackable list of arguments
+-- @param log_writer A callable function acting as sink implementation and accepting log as parameter.
+-- @return A new SinkAdapter instance.
 setmetatable(SinkAdapter, {
   __call = function(cls, ...)
     return cls:new(...)

@@ -1,11 +1,12 @@
 --- Read the stack trace and provide additional log entries.
 
---- Add entries specified by keys.
+--- Add stack information to log entries.
 -- @function StackWriter
 -- @param keys The entries to add: ["line", "file"]
 -- @param opts Optional configurations
 -- @param opts.max_parents The maximum number of parent directory that file should include
 -- @param opts.stack_level The stack level to inspect, starts from the caller of the logger's method, defaults to 0
+-- @return A callable that adds the specified keys to the log entry
 local function StackWriter(keys, opts)
   opts = opts or {}
   opts.stack_level = opts.stack_level or 0

@@ -6,7 +6,8 @@ local File = {}
 
 --- Create a new file writer.
 -- @function File
--- @param path The path to the logging file
+-- @param path The path to the logging file.
+-- @return A new File sink instance.
 setmetatable(File, {
   __call = function(cls, ...)
     return cls:new(...)
