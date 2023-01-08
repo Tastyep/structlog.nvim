@@ -7,11 +7,13 @@ local File = require("structlog.sinks.file")
 
 --- Create a new rotating file writer.
 -- @function RotatingFile
--- @param path The path to the logging file
--- @param opts Optional parameters
--- @param opts.max_size Maximum size of the file in bytes
--- @param opts.max_age Maximum age of the file is seconds
--- @param opts.time_format The time format used for renaming the log, default: "%F-%H:%M:%S"
+-- @param path The path to the logging file.
+-- @param opts Optional parameters.
+-- @param opts.max_size Maximum size of the file in bytes.
+-- @param opts.max_age Maximum age of the file is seconds.
+-- @param opts.time_format The time format used for renaming the log, default: "%F-%H:%M:%S".
+-- <br/><a href="https://en.cppreference.com/w/c/chrono/strftime">time_format documentation</a>.
+-- @return A new RotatingFile sink instance.
 setmetatable(RotatingFile, {
   __call = function(cls, ...)
     return cls:new(...)

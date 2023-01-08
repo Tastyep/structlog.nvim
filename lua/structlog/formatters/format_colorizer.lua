@@ -11,6 +11,7 @@ local FormatColorizer = {}
 -- @param opts Optional parameters
 -- @param opts.blacklist A list of entries to not format, default: {}
 -- @param opts.blacklist_all A boolean value indicating whether to format unformatted entries, default: false
+-- @return A callable that formats the log message in the given format and colors.
 setmetatable(FormatColorizer, {
   __call = function(cls, ...)
     return cls:new(...)

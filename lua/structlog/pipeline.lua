@@ -6,10 +6,11 @@ local Pipeline = {}
 
 --- Create a new pipeline.
 -- @function Pipeline
--- @param level The logging level of the pipeline
--- @param processors The list of processors running on the pipeline logs
--- @param formatter The formatter of the pipeline
--- @param sink The sink to write the structured log to
+-- @param level The logging level of the pipeline.
+-- @param processors The list of processors running on the pipeline logs.
+-- @param formatter The formatter of the pipeline.
+-- @param sink The sink to write the structured log to.
+-- @return A new pipeline instance.
 setmetatable(Pipeline, {
   __class = function(cls, ...)
     return cls:new(...)

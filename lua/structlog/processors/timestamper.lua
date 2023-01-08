@@ -1,14 +1,12 @@
---- Add a 'timestamp' entry to the log entries.
+--- Add a formatted 'timestamp' entry to the log entries.
+-- # The format specification can be found here:
+-- <a href="https://www.lua.org/manual/5.4/manual.html#pdf-os.date">lua-5.4 manual</a>
+-- and <a href="https://en.cppreference.com/w/c/chrono/strftime">cppreference: strftime</a>
 
 --- Add a timestamp entry.
 -- @function Timestamper
 -- @param format The format string passed to os.date.
---
---  Format examples can be found in these two links:
---
---  https://devdocs.io/lua~5.4/index#pdf-os.date
---
---  https://www.lua.org/pil/22.1.html
+-- @return A callable function returning the updated log entry.
 local function Timestamper(format)
   return function(log)
     log["timestamp"] = os.date(format)

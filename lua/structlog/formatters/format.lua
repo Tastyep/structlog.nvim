@@ -1,13 +1,16 @@
 --- Format entries using a string format.
+-- The string format documentation can be found here:
+-- <a href="https://www.lua.org/manual/5.4/manual.html#pdf-string.format">lua-5.4 manual</a>
 
 --- Format the log entries listed in entries with the given format.
 -- Remaining entries will be written as key=value.
 -- @function Format
--- @param format A format to pass to string.format
--- @param entries The log entries to pass as arguments to string.format
--- @param opts Optional parameters
--- @param opts.blacklist A list of entries to not format, default: {}
--- @param opts.blacklist_all A boolean value indicating whether to format unformatted entries, default: false
+-- @param format A format to pass to string.format.
+-- @param entries The log entries to pass as arguments to string.format.
+-- @param opts Optional parameters.
+-- @param opts.blacklist A list of entries to not format, default: {}.
+-- @param opts.blacklist_all A boolean value indicating whether to format unformatted entries, default: false.
+-- @return A callable that formats the log message in the given format.
 local function Format(format, entries, opts)
   opts = opts or {}
   opts.blacklist = opts.blacklist or {}

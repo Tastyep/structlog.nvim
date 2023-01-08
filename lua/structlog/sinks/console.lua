@@ -4,9 +4,10 @@
 -- @type Console
 local Console = {}
 
---- Create a new console writer
+--- Create a new console writer.
 -- @function Console
--- @param async Make the logger async, default: True
+-- @param async Make the logger async, default: True.
+-- @return A new console sink instance.
 setmetatable(Console, {
   __call = function(cls, ...)
     return cls:new(...)
